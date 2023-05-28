@@ -1,14 +1,11 @@
 import { Controls } from "./Controls";
 import { MazePiece } from "../models/MazePiece";
 import { MazePaths } from "../models/MazePaths";
-import { RandomNumbers } from "../shared_methods/RandomNumbers";
 import { ComputerInsert } from "../models/ComputerInsert";
 import { ComputerMove } from "../models/ComputerMove";
 
 export class ComputerPlayer extends Controls {
     
-    private _randomNumbers: RandomNumbers = new RandomNumbers();
-
     private _fixedRowAndColumnIndexes: number[] = [1, 3, 5, 7];
 
     computerInsertCalculation(pieces: MazePiece[], currentPiece: MazePiece, computerPlayer: number) : ComputerInsert {
@@ -40,13 +37,13 @@ export class ComputerPlayer extends Controls {
             let treasurePiece: MazePiece = pieces[indexOfTreasure];
 
             //Generate random insert.
-            let rowOrColum: number = this._randomNumbers.generateRandomNumber(0, 2);
-            let randomTopOrLeft: number = this._randomNumbers.generateRandomNumber(0, 2);
+            let rowOrColum: number = this.randomNumbers.generateRandomNumber(0, 2);
+            let randomTopOrLeft: number = this.randomNumbers.generateRandomNumber(0, 2);
             let randomInsert: number = (rowOrColum == 0) ? this.generateNumberWithSkip(treasurePiece.row) : this.generateNumberWithSkip(treasurePiece.column);
            
             isColumn = (rowOrColum == 0) ? false : true;
             target = this._fixedRowAndColumnIndexes[randomInsert];
-            orientation = this._randomNumbers.generateRandomNumber(0, 4);
+            orientation = this.randomNumbers.generateRandomNumber(0, 4);
             isTopOrLeft = (randomTopOrLeft == 0) ? true : false;
         }
 
@@ -319,10 +316,10 @@ export class ComputerPlayer extends Controls {
     }
 
     private generateNumberWithSkip(skipNumber: number) : number {
-        let randomInsert: number = this._randomNumbers.generateRandomNumber(0, this._fixedRowAndColumnIndexes.length);
+        let randomInsert: number = this.randomNumbers.generateRandomNumber(0, this._fixedRowAndColumnIndexes.length);
 
         while (this._fixedRowAndColumnIndexes[randomInsert] == skipNumber) {
-            randomInsert = this._randomNumbers.generateRandomNumber(0, this._fixedRowAndColumnIndexes.length);
+            randomInsert = this.randomNumbers.generateRandomNumber(0, this._fixedRowAndColumnIndexes.length);
         }
 
         return randomInsert;

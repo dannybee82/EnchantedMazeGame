@@ -2,7 +2,6 @@ import { MazePiece } from "../models/MazePiece";
 import { PiecesEntryPoints } from "./PiecesEntryPoints";
 import { MazePaths } from "../models/MazePaths";
 import { PieceImages } from "./PieceImages";
-import { CommonArrayFunctions } from "../shared_methods/CommonArrayFunctions";
 
 export class SearchMazePath extends PiecesEntryPoints {
 
@@ -68,10 +67,8 @@ export class SearchMazePath extends PiecesEntryPoints {
         let maxSize: number = 9;
         let matrix: number[][] = [[]];
 
-        let _commonArrayFunctions: CommonArrayFunctions = new CommonArrayFunctions();
-
         for(let i = 0; i < maxSize; i++) {
-            let numbers: number[] = _commonArrayFunctions.fillNumberArray(maxSize, 0, false);  
+            let numbers: number[] = this.commonArrayFunctions.fillNumberArray(maxSize, 0, false);  
             matrix[i] = numbers;
         }
 
@@ -192,9 +189,8 @@ export class SearchMazePath extends PiecesEntryPoints {
          let columnDifference: number = Math.abs(column - destination[1]);
 
         if(columnDifference < rowDifference) {
-            let _commonArrayFunctions: CommonArrayFunctions = new CommonArrayFunctions();
-            arr = _commonArrayFunctions.swap(arr, 0, 1);
-            arr = _commonArrayFunctions.swap(arr, 2, 3);
+            arr = this.commonArrayFunctions.swap(arr, 0, 1);
+            arr = this.commonArrayFunctions.swap(arr, 2, 3);
         }        
 
         return arr;
@@ -416,7 +412,6 @@ export class SearchMazePath extends PiecesEntryPoints {
     }
 
     private getPaths(index: number, pieces: MazePiece[]) : void {
-
         let currentPieceNumber: number = pieces[index].pieceNumber;
         let currentOrientation: number = pieces[index].orientation;
 

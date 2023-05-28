@@ -10,9 +10,3 @@ export const PieceInserted = trigger('PieceInserted', [
         style({ opacity: 1 })
     ]))),      
 ]);
-
-export class Animations {
-   
-    
-
-}

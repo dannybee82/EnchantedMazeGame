@@ -1,4 +1,6 @@
-export class PiecesEntryPoints {
+import { Misc } from "./Misc";
+
+export class PiecesEntryPoints extends Misc {
 
     //Direction Clockwise: North, East, South, West
     private _piece001: number[][] = [[1, 0, 1, 0],

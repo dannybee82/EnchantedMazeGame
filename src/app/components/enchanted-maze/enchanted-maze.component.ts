@@ -15,10 +15,7 @@ import { TreasuresService } from 'src/app/services/treasures.service';
 //Methods.
 import { ComputerPlayer } from 'src/app/methods/ComputerPlayer';
 
-//Common Methods.
-import { CommonArrayFunctions } from 'src/app/shared_methods/CommonArrayFunctions';
-
-//Other.
+//Animations.
 import { PieceInserted } from 'src/app/methods/Animations';
 
 @Component({
@@ -53,14 +50,10 @@ export class EnchantedMazeComponent extends ComputerPlayer {
 
   public isGameEnded: boolean = false;
 
-  public logMessages: string[] = [];
-
-  private _orientationNames: string[] = ["North", "East", "South", "West"];
+  public logMessages: string[] = [];  
 
   private _lastInsertedAxisY: boolean = false;
   private _lastInsertedRowOrColumn: number = -1;
-
-  private _commonArrayFunctions: CommonArrayFunctions = new CommonArrayFunctions();
 
   constructor(private gameSettingsService: GameSettingsService, private mazeService: MazeService, private treasuresService: TreasuresService) {
     super();
@@ -171,7 +164,7 @@ export class EnchantedMazeComponent extends ComputerPlayer {
 
       if(this.currentPiece.orientation != cpuInsert.orientation) {
         this.currentPiece.orientation = cpuInsert.orientation;
-        this.addLoggingMessage("CPU rotated piece to: " + this._orientationNames[cpuInsert.orientation] );
+        this.addLoggingMessage("CPU rotated piece to: " + this.orientationNames[cpuInsert.orientation] );
       } else {
         this.addLoggingMessage("CPU doesn't rotate piece.");
       }
@@ -489,8 +482,8 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     this.treasuresService.generateTreasures(amountOfTreasures, amountOfPlayers);
     let treasures: MazeTreasures[] = this.treasuresService.getMazeTreasures();
     
-    this.players = this._commonArrayFunctions.fillNumberArray(amountOfPlayers, 0, true);
-    this.score = this._commonArrayFunctions.fillNumberArray(amountOfPlayers, 0, false);
+    this.players = this.commonArrayFunctions.fillNumberArray(amountOfPlayers, 0, true);
+    this.score = this.commonArrayFunctions.fillNumberArray(amountOfPlayers, 0, false);
     this.rows = this.gameSettingsService.getRows();
     this.columns = this.gameSettingsService.getColumns();
     this.humanOrComputer = this.gameSettingsService.getHumanOrCpu();
