@@ -1,0 +1,196 @@
+img.orientation-north {
+    transform: rotate(0deg);
+}
+
+img.orientation-east {
+    transform: rotate(90deg);
+}
+
+img.orientation-south {
+    transform: rotate(180deg);
+}
+
+img.orientation-west {
+    transform: rotate(270deg);
+}
+
+.maze-border {
+    background-color: #000;
+}
+
+.maze-border-top-and-bottom {
+    height: 40px;
+}
+
+.maze-border-x-axis {
+    width: 100px;
+    text-align: center;
+}
+
+.maze-border-y-axis {
+    height: 100px;
+    /* padding-top: 45px;     */
+}
+
+.maze-border-side {
+    width: 40px;
+}
+
+.enchanted-maze-game {
+    position: relative;
+    float: left;
+    width: 60%;
+}
+
+.enchanted-maze-menu {
+    position: relative;
+    float: right;
+    width: 30%;
+}
+
+button.chevron-hover {
+    color: var(--bs-light);
+    background-color: var(--bs-dark);
+}
+
+button.chevron-hover:hover {
+    color: var(--bs-dark);
+    background-color: var(--bs-light);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button.chevron-hover:hover i {
+    color: var(--bs-dark);
+    background-color: var(--bs-light);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button.has-hint {
+    background-color: goldenrod;
+}
+
+.player-location {
+    position: absolute;
+    top: 25px;
+    left: 30px;
+    display: inline-block;    
+    z-index: 50;
+}
+
+.player-at-piece {
+    position: absolute;
+    top: 50px;
+    left: 30px;
+    display: inline-block;    
+    z-index: 50;
+}
+
+.treasure-at-location {
+    position: absolute;
+    top: 35px;
+    left: 30px;
+    display: inline-block;    
+    z-index: 25;
+}
+
+.treasure-at-piece {
+    position: absolute;
+    top: 50px;
+    left: 30px;
+    display: inline-block;    
+    z-index: 25;
+}
+
+.player {
+    /* background-image: url('/assets/player/knight.png'); */
+    -webkit-mask:url('/assets/player/knight.png');
+    mask:url('/assets/player/knight.png');
+    width: 30px;
+    height: 40px;
+    /* font-size: 100px; */
+}
+
+.player:hover {
+    cursor: default;
+}
+
+.player-turn:hover {
+    cursor: default;
+}
+
+.player-turn {
+    position: relative;
+    float: left;
+    font-size: 64pt;
+}
+
+.player-one {
+    color: red;
+    background-color: red;
+}
+
+.player-two {
+    color: blue;
+    background-color: blue;    
+}
+
+.player-three {
+    color: goldenrod;
+    background-color: goldenrod;
+}
+
+.player-four {
+    color: green;
+    background-color: green;
+}
+
+.single-maze {
+    position: relative;
+    float: left;
+}
+
+/* .steps {
+    position: absolute;
+    top: 50px;
+    left: 30px;
+    display: inline-block;    
+    z-index: 25;
+}
+
+.steps-north {
+    -webkit-mask:url('/assets/player/steps.png');
+    mask:url('/assets/player/steps.png');
+    width: 33px;
+    height: 40px;
+    transform: rotate(0deg);
+}
+
+.steps-east {
+    -webkit-mask:url('/assets/player/steps.png');
+    mask:url('/assets/player/steps.png');
+    width: 33px;
+    height: 40px;
+    transform: rotate(90deg);
+}
+
+.steps-south {
+    -webkit-mask:url('/assets/player/steps.png');
+    mask:url('/assets/player/steps.png');
+    width: 33px;
+    height: 40px;
+    transform: rotate(180deg);
+}
+
+.steps-west {
+    -webkit-mask:url('/assets/player/steps.png');
+    mask:url('/assets/player/steps.png');
+    width: 33px;
+    height: 40px;
+    transform: rotate(270deg);
+} */
+
+/* .can-move-to-tile {
+    outline: 5px solid blue;
+} */

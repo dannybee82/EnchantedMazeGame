@@ -1,0 +1,93 @@
+<div class="container-fluid">
+    <div class="row">
+        New Game
+    </div>
+    <div class="row p-0">
+        <div class="col-1 m-0">
+            Players:
+        </div>
+        <div class="col-1 m-0 mt-1 mb-2">
+            {{ this.amountOfPlayers }}
+        </div>
+        <div class="col-auto m-0">
+            <button class="btn bg-danger p-1 text-light" title="Decrease" (click)="this.changePlayerAmount(false)" [disabled]="this.amountOfPlayers == 1">
+                <i class="bi bi-dash-lg"></i>
+            </button>
+        </div>        
+        <div class="col-auto m-0">
+            <button class="btn bg-success p-1 text-light" title="Increase" (click)="this.changePlayerAmount(true)" [disabled]="this.amountOfPlayers == 4">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row p-0 mb-4">
+        <div class="col-1 m-0">
+            Treasures:
+        </div>
+        <div class="col-1 m-0 mt-1">
+            {{ this.amountOfTreasures }}
+        </div>
+        <div class="col-auto m-0">
+            <button class="btn bg-danger p-1 text-light" title="Decrease" (click)="this.chageTreasureAmount(false)" [disabled]="this.amountOfTreasures == 1">
+                <i class="bi bi-dash-lg"></i>
+            </button>
+        </div>        
+        <div class="col-auto m-0">
+            <button class="btn bg-success p-1 text-light" title="Increase" (click)="this.chageTreasureAmount(true)" [disabled]="this.amountOfTreasures == this.maxAmountOfTreasures">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        </div>
+    </div>    
+    <div class="row mt-4 mb-4">
+        <div class="col-2">
+            Maze difficulty:
+        </div>
+        <div class="col-auto">
+            <button class="btn text-light bg-success p-2 button-difficulty" [disabled]="this.difficulty == 1" (click)="this.setDifficulty(1)" title="Easy">
+                <i class="bi bi-1-circle-fill"></i>
+            </button>
+        </div>
+        <div class="col-auto">
+            <button class="btn text-light bg-warning p-2 button-difficulty" [disabled]="this.difficulty == 2" (click)="this.setDifficulty(2)" title="Normal">
+                <i class="bi bi-2-circle-fill"></i>
+            </button>
+        </div>
+        <div class="col-auto">
+            <button class="btn text-light bg-danger p-2 button-difficulty" [disabled]="this.difficulty == 3" (click)="this.setDifficulty(3)" title="Hard">
+                <i class="bi bi-3-circle-fill"></i>
+            </button>
+        </div>
+        <div class="col-auto pt-2 button-difficulty">
+            <span class="text-success" *ngIf="this.difficulty == 1">Easy</span>
+            <span class="text-warning" *ngIf="this.difficulty == 2">Normal</span>
+            <span class="text-danger" *ngIf="this.difficulty == 3">Hard</span>
+        </div>
+    </div>
+    <div class="row p-0 mb-2" *ngFor="let player of this.humanOrCpu; let index = index">
+        <div class="col-2">Player: {{ index + 1 }}</div>
+        <div class="col-2 player" [class.player-one]="index == 0" [class.player-two]="index == 1" [class.player-three]="index == 2"
+        [class.player-four]="index == 3"></div>
+        <div class="col-auto">
+            <button class="btn p-2 text-light bg-success" [disabled]="player" (click)="changePlayer(index, true)">
+                <i class="bi bi-person-square"></i>
+            </button>
+        </div>
+        <div class="col-auto">
+            <button class="btn p-2 text-light bg-danger" [disabled]="!player" (click)="changePlayer(index, false)">
+                <i class="bi bi-laptop-fill"></i>
+            </button>
+        </div>
+        <div class="col-2 pt-2">
+            <span class="text-success" *ngIf="player">Human</span>
+            <span class="text-danger" *ngIf="!player">Computer</span>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-auto">
+            <button class="btn bg-success text-light p-2" title="Start New Game" (click)="this.startNewGame()">
+                <i class="bi bi-check-lg"></i>
+                <span class="ms-2">Start New Game</span>
+            </button>
+        </div>
+    </div>
+</div>
