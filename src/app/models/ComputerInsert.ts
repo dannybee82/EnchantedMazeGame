@@ -1,6 +1,6 @@
 export class ComputerInsert {
 
-    constructor(public isColumns: boolean, 
+    constructor(public insertAxisY: boolean, 
                 public rowOrColumnIndex: number,
                 public orientation: number,
                 public isTopOrLeft: boolean) {}

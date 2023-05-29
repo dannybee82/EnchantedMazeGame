@@ -92,6 +92,12 @@ export class SearchMazePath extends PiecesEntryPoints {
         let allPaths: number[][] = [];
         allPaths.push(start);
 
+        isNotAtDestination = this.checkStartAndDestinationNotAdjacent(start, destination);
+
+        if(!isNotAtDestination) {
+            allPaths.push(destination);
+        }
+
         while(isNotAtDestination) {  
             let lastPosition: number = allPaths.length - 1;
             let lastRow: number = allPaths[lastPosition][0];
@@ -532,6 +538,30 @@ export class SearchMazePath extends PiecesEntryPoints {
         if(index == -1) {
             this._paths.push( new MazePaths( row, column ) );
         }        
+    }
+
+    private checkStartAndDestinationNotAdjacent(start: number[], destination: number[]) {
+        if((start[0] - 1) == destination[0] && start[1] == destination[1]) {
+            //Above?
+            return false;            
+        }
+
+        if(start[0] == destination[0] && (start[1] + 1) == destination[1]) {
+            //Right
+            return false;            
+        }
+
+        if((start[0] + 1) == destination[0] && start[1] == destination[1]) {
+            //below?
+            return false;            
+        }
+
+        if(start[0] == destination[0] && (start[1] - 1) == destination[1]) {
+            //Left
+            return false;            
+        }
+
+        return true;
     }
 
 }

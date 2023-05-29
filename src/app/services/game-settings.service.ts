@@ -3,11 +3,12 @@ import { BehaviorSubject } from 'rxjs';
 
 //Methods.
 import { PieceImages } from '../methods/PieceImages';
+import { Misc } from '../methods/Misc';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameSettingsService {
+export class GameSettingsService extends Misc {
 
   /**
    * Variables.
@@ -18,9 +19,6 @@ export class GameSettingsService {
   private _amountOfTreasures: number = -1;
   private _humanOrCpu: boolean[] = [];
   private _difficulty: number = 1;
-
-  private _rows: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  private _columns: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   /**
    * Subjects.
@@ -42,6 +40,8 @@ export class GameSettingsService {
    */
 
   constructor() {
+    super();
+
     this._startGame = new BehaviorSubject<boolean>(false);
   }
 
@@ -51,6 +51,9 @@ export class GameSettingsService {
    */
 
   setAmountOfPlayers(value: number) : void {
+    value = (value < this.minimumAmountOfPlayers) ? this.minimumAmountOfPlayers : value;
+    value = (value > this.maximumAmountOfPlayers) ? this.maximumAmountOfPlayers : value;
+
     this._amountOfPlayers = value;
   }
   
@@ -59,6 +62,9 @@ export class GameSettingsService {
   }
   
   setAmountOfTreasures(value: number) : void {
+    value = (value < this.minimumAmountOfTreasures) ? this.minimumAmountOfPlayers : value;
+    value = (value > this.getMaximumAmountOfTreasures()) ? this.getMaximumAmountOfTreasures() : value;
+
     this._amountOfTreasures = value;
   }
   
@@ -70,14 +76,6 @@ export class GameSettingsService {
     return this._pieceImages.getTreasureImages().length;
   }
   
-  getRows() : number[] {
-    return this._rows;
-  }
-  
-  getColumns() : number[] {
-    return this._columns;
-  }
-
   setHumanOrCpu(value: boolean[]) : void {
     this._humanOrCpu = value;
   }
@@ -87,6 +85,9 @@ export class GameSettingsService {
   }
 
   setDifficulty(value: number) : void {
+    value = (value < this.minimumDifficulty) ? this.minimumDifficulty : value;
+    value = (value > this.maximumDifficulty) ? this.maximumDifficulty : value;
+
     this._difficulty = value;
   }
   
@@ -102,6 +103,7 @@ export class GameSettingsService {
   resetDefaults() : void {
     this._amountOfPlayers = -1;
     this._amountOfTreasures = -1;
+    this._difficulty = 1;
     this._humanOrCpu = [];
   }
 

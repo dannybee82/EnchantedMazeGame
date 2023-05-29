@@ -18,4 +18,19 @@ export class Misc {
 
     public orientationNames: string[] = ["North", "East", "South", "West"];
 
+    public minimumAmountOfPlayers: number = 1;
+    public maximumAmountOfPlayers: number = 4;
+
+    public minimumAmountOfTreasures: number = 1;
+
+    public rows: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    public columns: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+    public fixedRowAndColumnIndexes: number[] = [1, 3, 5, 7];
+
+    //Difficulties: 1 = Easy, 2 = Normal, 3 = Hard.
+    public minimumDifficulty: number = 1;
+    public maximumDifficulty: number = 3;
+
+
 }

@@ -26,9 +26,7 @@ import { PieceInserted } from 'src/app/methods/Animations';
 })
 
 export class EnchantedMazeComponent extends ComputerPlayer {
-
-  public rows: number[] = [];
-  public columns: number[] = [];  
+ 
   public players: number[] = [];
   public humanOrComputer: boolean[] = [];
   public score: number[] = [];
@@ -160,7 +158,7 @@ export class EnchantedMazeComponent extends ComputerPlayer {
 
     if(!this.humanOrComputer[this._playersTurn] && this.currentPiece != undefined) {
       //Computer control from this point.
-      let cpuInsert: ComputerInsert = this.computerInsertCalculation(this.pieces, this.currentPiece, this._playersTurn);
+      let cpuInsert: ComputerInsert = this.computerInsertCalculation(this.pieces, this.currentPiece, this._playersTurn, this.fixedRowAndColumnIndexes);
 
       if(this.currentPiece.orientation != cpuInsert.orientation) {
         this.currentPiece.orientation = cpuInsert.orientation;
@@ -169,19 +167,19 @@ export class EnchantedMazeComponent extends ComputerPlayer {
         this.addLoggingMessage("CPU doesn't rotate piece.");
       }
 
-      if(cpuInsert.isColumns) {
+      if(!cpuInsert.insertAxisY) {
         this.addLoggingMessage("CPU inserts in column. At index:" + cpuInsert.rowOrColumnIndex);
       } else {
         this.addLoggingMessage("CPU inserts in row. At index:" + cpuInsert.rowOrColumnIndex);
       }
 
-      if(cpuInsert.isColumns) {
+      if(!cpuInsert.insertAxisY) {
         (cpuInsert.isTopOrLeft) ? this.addLoggingMessage("Column Left") : this.addLoggingMessage("Columnn Right");
       } else {
         (cpuInsert.isTopOrLeft) ? this.addLoggingMessage("Row Top") : this.addLoggingMessage("Row Bottom");
       }
 
-      if(cpuInsert.isColumns) {
+      if(!cpuInsert.insertAxisY) {
         this.insertCpuAxis(false, cpuInsert.isTopOrLeft, cpuInsert.rowOrColumnIndex);  
       } else {
         this.insertCpuAxis(true, cpuInsert.isTopOrLeft, cpuInsert.rowOrColumnIndex);
@@ -436,11 +434,11 @@ export class EnchantedMazeComponent extends ComputerPlayer {
 
   showHint() : void {
     if(this.currentPiece != undefined) {
-      let hint: ComputerInsert = this.computerInsertCalculation(this.pieces, this.currentPiece, this._playersTurn);
+      let hint: ComputerInsert = this.computerInsertCalculation(this.pieces, this.currentPiece, this._playersTurn, this.fixedRowAndColumnIndexes);
 
       this.currentPiece.orientation = hint.orientation;
     
-      if(!hint.isColumns) {
+      if(!hint.insertAxisY) {
         this._hint[0] = (hint.isTopOrLeft) ? 0 : 3;
       } else {
         this._hint[0] = (hint.isTopOrLeft) ? 1 : 2;
@@ -484,8 +482,6 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     
     this.players = this.commonArrayFunctions.fillNumberArray(amountOfPlayers, 0, true);
     this.score = this.commonArrayFunctions.fillNumberArray(amountOfPlayers, 0, false);
-    this.rows = this.gameSettingsService.getRows();
-    this.columns = this.gameSettingsService.getColumns();
     this.humanOrComputer = this.gameSettingsService.getHumanOrCpu();
     
     this.pieces = this.mazeService.getAllPieces();
@@ -506,8 +502,6 @@ export class EnchantedMazeComponent extends ComputerPlayer {
   }
 
   private resetDefaults() : void {
-    this.rows = [];
-    this.columns = [];  
     this.players= [];
     this.humanOrComputer = [];
     this.score = [];

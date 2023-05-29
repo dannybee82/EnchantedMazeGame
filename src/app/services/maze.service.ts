@@ -48,7 +48,7 @@ export class MazeService {
     }
   }
 
-  addPlayers(amountOfPlayers: number): void {
+  addPlayers(amountOfPlayers: number) : void {
     let startPoints: number[] = [0, 8, 72, 80];
 
     for (let i = 0; i < amountOfPlayers; i++) {
@@ -57,7 +57,7 @@ export class MazeService {
     }
   }
 
-  getAllPieces(): MazePiece[] {
+  getAllPieces() : MazePiece[] {
     return this._mazePieces;
   }
 
@@ -65,7 +65,7 @@ export class MazeService {
     this._mazePieces = [];
   }
 
-  generateStartPiece(): MazePiece {
+  generateStartPiece() : MazePiece {
     let randomImageIndex: number = this._randomNumbers.generateRandomNumber(0, 4);
     let randomOrientation: number = this._randomNumbers.generateRandomNumber(0, 4);
     return new MazePiece(-1, -1, this._pieceImages.getPiecesRed()[randomImageIndex], randomImageIndex, randomOrientation, false, -1, false, -1, -1);    
@@ -85,5 +85,5 @@ export class MazeService {
 
     return pieces;
   }
-
+  
 }

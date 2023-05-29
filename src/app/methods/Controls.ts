@@ -10,13 +10,13 @@ export class Controls extends SearchMazePath {
     private _changedCurrentPiece: MazePiece = new MazePiece(-1, -1, '', -1, -1, false, -1, false, -1, -1, '');
     private _dummyCurrentPiece: MazePiece = new MazePiece(-1, -1, '', -1, -1, false, -1, false, -1, -1, '');
 
-    insert(pieces: MazePiece[], currentPiece: MazePiece, isColumns: boolean, fromTopOrLeft: boolean, targetColumnOrRow: number, isDummy: boolean) : MazePiece[] {
+    insert(pieces: MazePiece[], currentPiece: MazePiece, isAxisY: boolean, fromTopOrLeft: boolean, targetColumnOrRow: number, isDummy: boolean) : MazePiece[] {
         this._piecesAtAxis = [];
         this._atIndexes = [];
         this._changedCurrentPiece = this.getDefaultMazePiece();
         this._dummyCurrentPiece = this.getDefaultMazePiece();
 
-        if(isColumns) {
+        if(isAxisY) {
             this.getColumns(pieces, targetColumnOrRow);
             currentPiece.column = targetColumnOrRow;
         } else {
@@ -39,9 +39,11 @@ export class Controls extends SearchMazePath {
             this._dummyCurrentPiece.column = -1;
         }        
 
-        if(isColumns) {
+        if(isAxisY) {
+            //Axis Y -> insert in column -> top or bottom -> will affect rows.
             this.reorderRows();
         } else {
+            //Axis X -> insert in row -> left or right -> will affect columns.
             this.reorderColumns();
         }
 

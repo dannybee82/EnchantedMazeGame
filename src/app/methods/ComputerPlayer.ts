@@ -5,19 +5,17 @@ import { ComputerInsert } from "../models/ComputerInsert";
 import { ComputerMove } from "../models/ComputerMove";
 
 export class ComputerPlayer extends Controls {
-    
-    private _fixedRowAndColumnIndexes: number[] = [1, 3, 5, 7];
 
-    computerInsertCalculation(pieces: MazePiece[], currentPiece: MazePiece, computerPlayer: number) : ComputerInsert {
+    computerInsertCalculation(pieces: MazePiece[], currentPiece: MazePiece, computerPlayer: number, fixedRowAndColumnIndexes: number[]) : ComputerInsert {
         //Data to return.
-        let isColumn: boolean = false;
+        let isInsertAxisY: boolean = false;
         let target: number = -1;
         let orientation: number = -1;
         let isTopOrLeft: boolean = false;
 
         //Get current paths.
         let currentPaths: MazePaths[] = this.search(computerPlayer, pieces);
-
+        
         //Some checks.
         let isComputerAtBoard: boolean = (currentPiece.player == computerPlayer) ? false : true;
         let treasureAtPiece: boolean = (currentPiece.hasTreasure && currentPiece.treasureForPlayer == computerPlayer) ? true : false;
@@ -30,7 +28,7 @@ export class ComputerPlayer extends Controls {
             let treasureFoundIndex: number = currentPaths.findIndex(item => item.row == treasurePiece.row && item.column == treasurePiece.column);  
             isTreasureAtCurrentPath = (treasureFoundIndex > -1) ? true : false;
         }
-        
+
         if(isComputerAtBoard && isTreasureAtCurrentPath && !treasureAtPiece) {
             //Treasure is at path.
             let indexOfTreasure = pieces.findIndex(item => item.treasureForPlayer == computerPlayer);
@@ -39,10 +37,10 @@ export class ComputerPlayer extends Controls {
             //Generate random insert.
             let rowOrColum: number = this.randomNumbers.generateRandomNumber(0, 2);
             let randomTopOrLeft: number = this.randomNumbers.generateRandomNumber(0, 2);
-            let randomInsert: number = (rowOrColum == 0) ? this.generateNumberWithSkip(treasurePiece.row) : this.generateNumberWithSkip(treasurePiece.column);
+            let randomInsert: number = (rowOrColum == 0) ? this.generateNumberWithSkip(treasurePiece.row, fixedRowAndColumnIndexes) : this.generateNumberWithSkip(treasurePiece.column, fixedRowAndColumnIndexes);
            
-            isColumn = (rowOrColum == 0) ? false : true;
-            target = this._fixedRowAndColumnIndexes[randomInsert];
+            isInsertAxisY = (rowOrColum == 0) ? false : true;
+            target = fixedRowAndColumnIndexes[randomInsert];
             orientation = this.randomNumbers.generateRandomNumber(0, 4);
             isTopOrLeft = (randomTopOrLeft == 0) ? true : false;
         }
@@ -51,13 +49,11 @@ export class ComputerPlayer extends Controls {
             //Search best insert -> when treasure is at insert piece.
             let bestInserts: MazePaths[] = [];
 
-            let allDummies: MazePiece[] = structuredClone(pieces);
-
-            //Traverse row + columns.
+            //Traverse row + columns [Y-Axis and X-Axis].
             for(let i = 0; i < 2; i++) {
-                let testRows: boolean = (i == 0) ? true : false;
+                let isAxisY: boolean = (i == 0) ? true : false;
 
-                 //Test orientations.
+                 //Test orientations. TODO: improvement here -> entry points [!!!]
                  for(let j = 0; j < 4; j++) {
 
                     //test top-left or bottom-right
@@ -65,18 +61,93 @@ export class ComputerPlayer extends Controls {
                         let isTopOrLeft: boolean = (k == 0) ? true : false;
 
                         //Test indexes of rows and columns.
-                        for(let m = 0; m < this._fixedRowAndColumnIndexes.length; m++) {
-                            let dummyPieces: MazePiece[] = allDummies;
+                        for(let m = 0; m < fixedRowAndColumnIndexes.length; m++) {
+                            let dummyPieces: MazePiece[] = structuredClone(pieces);
                             let dummyInsertPiece: MazePiece = currentPiece;
                             dummyInsertPiece.orientation = j;
 
                             //Test.
-                            dummyPieces = this.insert(dummyPieces, dummyInsertPiece, testRows, isTopOrLeft, this._fixedRowAndColumnIndexes[m], true);
+                            dummyPieces = this.insert(dummyPieces, dummyInsertPiece, isAxisY, isTopOrLeft, fixedRowAndColumnIndexes[m], true);
                             dummyInsertPiece = this.getDummyCurrentPiece(); //Any use?
-
                             let indexOfTreasure = dummyPieces.findIndex(item => item.treasureForPlayer == computerPlayer);
 
                             //Additional check -> is treasure still in the maze?
+                            if(indexOfTreasure > -1) {
+                                let possiblePaths: MazePaths[] = this.search(computerPlayer, dummyPieces);
+
+                                let treasurePiece: MazePiece = dummyPieces[indexOfTreasure];
+                                
+                                let differences: number[] = this.calculateDistances(possiblePaths, treasurePiece.row, treasurePiece.column);
+                                let lowestNumber: number = (differences.length > 0) ? Math.min(...differences) : 999;
+
+                                if (lowestNumber < 999) {
+                                    let lowestNumberIndexes: number[] = this.getLowestNumberIndexes(differences, lowestNumber);
+
+                                    for (let n = 0; n < lowestNumberIndexes.length; n++) {
+                                        let index: number = lowestNumberIndexes[n];
+                                        let goodPath: MazePaths = possiblePaths[index];
+                                        goodPath.total = lowestNumber;
+
+                                        let foundIndex: number = bestInserts.findIndex(item => item.row == goodPath.row && item.column == goodPath.column && item.total == goodPath.total);
+
+                                        if (foundIndex == -1) {
+                                            goodPath.total = lowestNumber;
+                                            goodPath.isInsertAxisY = isAxisY;
+                                            goodPath.insertAt = fixedRowAndColumnIndexes[m];
+                                            goodPath.orientations = j;
+                                            goodPath.isTopOrLeft = isTopOrLeft;
+                                            bestInserts.push(goodPath);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                 }
+            }
+
+            if(bestInserts.length > 0) {
+                let bestChoise: MazePaths = this.searchBestInsert(bestInserts);
+
+                isInsertAxisY = bestChoise.isInsertAxisY ?? false;
+                target = bestChoise.insertAt ?? fixedRowAndColumnIndexes[0];
+                orientation = bestChoise.orientations ?? 0;
+                isTopOrLeft = bestChoise.isTopOrLeft ?? false;
+            } else {
+                isInsertAxisY = false;
+                target = 1;
+                orientation = 0;
+                isTopOrLeft = false;
+            } 
+        }
+
+        if( (isComputerAtBoard && !isTreasureAtCurrentPath && !treasureAtPiece) || (!isComputerAtBoard && !isTreasureAtCurrentPath && !treasureAtPiece) ) {
+            let bestInserts: MazePaths[] = [];
+
+            //Traverse row + columns.
+            for(let i = 0; i < 2; i++) {
+                let isAxisY: boolean = (i == 0) ? true : false;
+                
+                //Test orientations.
+                for(let j = 0; j < 4; j++) {
+
+                    //test top-left or bottom-right
+                    for(let k = 0; k < 2; k++) {
+                        let isTopOrLeft: boolean = (k == 0) ? true : false;
+
+                        //Test indexes of rows and columns.
+                        for(let m = 0; m < fixedRowAndColumnIndexes.length; m++) {
+                            let dummyPieces: MazePiece[] = structuredClone(pieces);
+                            let dummyInsertPiece: MazePiece = currentPiece;
+                            dummyInsertPiece.orientation = j;
+
+                            //Test.
+                            dummyPieces = this.insert(dummyPieces, dummyInsertPiece, isAxisY, isTopOrLeft, fixedRowAndColumnIndexes[m], true);
+                            dummyInsertPiece = this.getDummyCurrentPiece(); //Any use?
+
+                            //Bug-fix : after insert the place of treasure can be changed - even pushed out the maze again!                            
+                            let indexOfTreasure = dummyPieces.findIndex(item => item.treasureForPlayer == computerPlayer);
+
                             if(indexOfTreasure > -1) {
                                 let treasurePiece: MazePiece = dummyPieces[indexOfTreasure];
 
@@ -96,87 +167,8 @@ export class ComputerPlayer extends Controls {
 
                                         if(foundIndex == -1) {
                                             goodPath.total = lowestNumber;
-                                            goodPath.isRow = testRows;
-                                            goodPath.insertAt = this._fixedRowAndColumnIndexes[m];
-                                            goodPath.orientations = j;
-                                            goodPath.isTopOrLeft = isTopOrLeft;
-                                            bestInserts.push(goodPath);
-                                        }                                    
-                                    }
-                                }
-                            }
-                        }
-                    }
-                 }
-            }
-
-            if(bestInserts.length > 0) {
-                let bestChoise: MazePaths = this.searchBestInsert(bestInserts);
-
-                isColumn = !bestChoise.isRow ?? false;
-                target = bestChoise.insertAt ?? this._fixedRowAndColumnIndexes[0];
-                orientation = bestChoise.orientations ?? 0;
-                isTopOrLeft = bestChoise.isTopOrLeft ?? false;
-            } else {
-                isColumn = false;
-                target = 1;
-                orientation = 0;
-                isTopOrLeft = false;
-            } 
-        }
-
-        if( (isComputerAtBoard && !isTreasureAtCurrentPath && !treasureAtPiece) || (!isComputerAtBoard && !isTreasureAtCurrentPath && !treasureAtPiece) ) {
-           let bestInserts: MazePaths[] = [];
-
-            let allDummies: MazePiece[] = structuredClone(pieces);
-
-            //Traverse row + columns.
-            for(let i = 0; i < 2; i++) {
-                let testRows: boolean = (i == 0) ? true : false;
-                
-                //Test orientations.
-                for(let j = 0; j < 4; j++) {
-
-                    //test top-left or bottom-right
-                    for(let k = 0; k < 2; k++) {
-                        let isTopOrLeft: boolean = (k == 0) ? true : false;
-
-                        //Test indexes of rows and columns.
-                        for(let m = 0; m < this._fixedRowAndColumnIndexes.length; m++) {
-                            let dummyPieces: MazePiece[] = allDummies;
-                            let dummyInsertPiece: MazePiece = currentPiece;
-                            dummyInsertPiece.orientation = j;
-
-                            //Test.
-                            dummyPieces = this.insert(dummyPieces, dummyInsertPiece, testRows, isTopOrLeft, this._fixedRowAndColumnIndexes[m], true);
-                            dummyInsertPiece = this.getDummyCurrentPiece(); //Any use?
-
-                            //Bug-fix : after insert the place of treasure can be changed - even pushed out the maze again!                            
-                            let indexOfTreasure = pieces.findIndex(item => item.treasureForPlayer == computerPlayer);
-
-                            if(indexOfTreasure > -1) {
-                                let treasurePiece: MazePiece = pieces[indexOfTreasure];
-                                let treasureRow: number = treasurePiece.row;
-                                let treasureColumn: number = treasurePiece.column;
-
-                                let possiblePaths: MazePaths[] = this.search(computerPlayer, dummyPieces);
-                                let differences: number[] = this.calculateDistances(possiblePaths, treasureRow, treasureColumn);
-                                let lowestNumber: number = (differences.length > 0) ? Math.min(...differences) : 999;
-
-                                if(lowestNumber < 999) {
-                                    let lowestNumberIndexes: number[] = this.getLowestNumberIndexes(differences, lowestNumber);
-
-                                    for(let n = 0; n < lowestNumberIndexes.length; n++) {
-                                        let index: number = lowestNumberIndexes[n];
-                                        let goodPath: MazePaths = possiblePaths[index];
-                                        goodPath.total = lowestNumber;
-
-                                        let foundIndex: number = bestInserts.findIndex(item => item.row == goodPath.row && item.column == goodPath.column && item.total == goodPath.total);
-
-                                        if(foundIndex == -1) {
-                                            goodPath.total = lowestNumber;
-                                            goodPath.isRow = testRows;
-                                            goodPath.insertAt = this._fixedRowAndColumnIndexes[m];
+                                            goodPath.isInsertAxisY = isAxisY;
+                                            goodPath.insertAt = fixedRowAndColumnIndexes[m];
                                             goodPath.orientations = j;
                                             goodPath.isTopOrLeft = isTopOrLeft;
                                             bestInserts.push(goodPath);
@@ -191,20 +183,20 @@ export class ComputerPlayer extends Controls {
 
             if(bestInserts.length > 0) {
                 let bestChoise: MazePaths = this.searchBestInsert(bestInserts);
-
-                isColumn = !bestChoise.isRow ?? false;
-                target = bestChoise.insertAt ?? this._fixedRowAndColumnIndexes[0];
+                
+                isInsertAxisY = bestChoise.isInsertAxisY ?? false;
+                target = bestChoise.insertAt ?? fixedRowAndColumnIndexes[0];
                 orientation = bestChoise.orientations ?? 0;
                 isTopOrLeft = bestChoise.isTopOrLeft ?? false;
             } else {
-                isColumn = false;
+                isInsertAxisY = false;
                 target = 1;
                 orientation = 0;
                 isTopOrLeft = false;
             }            
         }
 
-        return new ComputerInsert(isColumn, target, orientation, isTopOrLeft);
+        return new ComputerInsert(isInsertAxisY, target, orientation, isTopOrLeft);
     }
 
     computerMoveCalculation(pieces: MazePiece[], currentPiece: MazePiece, computerPlayer: number) : ComputerMove {
@@ -253,9 +245,11 @@ export class ComputerPlayer extends Controls {
     private calculateDistances(possiblePaths: MazePaths[], treasureRow: number, treasureColumn: number) : number[] {
         let arr: number[] = [];
 
-        for(let i = 0; i < possiblePaths.length; i++) {
-            let calculated: number = Math.abs(possiblePaths[i].row - treasureRow) + Math.abs(possiblePaths[i].column - treasureColumn);
-            arr.push(calculated);
+        if(possiblePaths.length > 0) {
+            for(let i = 0; i < possiblePaths.length; i++) {
+                let calculated: number = Math.abs(possiblePaths[i].row - treasureRow) + Math.abs(possiblePaths[i].column - treasureColumn);
+                arr.push(calculated);
+            }
         }
 
         return arr;
@@ -315,11 +309,11 @@ export class ComputerPlayer extends Controls {
         return filtered;
     }
 
-    private generateNumberWithSkip(skipNumber: number) : number {
-        let randomInsert: number = this.randomNumbers.generateRandomNumber(0, this._fixedRowAndColumnIndexes.length);
+    private generateNumberWithSkip(skipNumber: number, fixedRowAndColumnIndexes: number[]) : number {
+        let randomInsert: number = this.randomNumbers.generateRandomNumber(0, fixedRowAndColumnIndexes.length);
 
-        while (this._fixedRowAndColumnIndexes[randomInsert] == skipNumber) {
-            randomInsert = this.randomNumbers.generateRandomNumber(0, this._fixedRowAndColumnIndexes.length);
+        while (fixedRowAndColumnIndexes[randomInsert] == skipNumber) {
+            randomInsert = this.randomNumbers.generateRandomNumber(0, fixedRowAndColumnIndexes.length);
         }
 
         return randomInsert;
