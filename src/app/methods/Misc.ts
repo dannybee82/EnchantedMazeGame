@@ -29,6 +29,9 @@ export class Misc {
 
     public fixedRowAndColumnIndexes: number[] = [1, 3, 5, 7];
 
+    public defaultSizeAxisX: number = 9;
+    public defaultSizeAxisY: number = 9;
+
     //Difficulties: 1 = Easy, 2 = Normal, 3 = Hard.
     public minimumDifficulty: number = 1;
     public maximumDifficulty: number = 3;
@@ -39,8 +42,20 @@ export class Misc {
      */
 
     findIndexOfPiece(pieces: MazePiece[], row: number, column: number) : number {
-        let index: number = pieces.findIndex(item => item.row == row && item.column == column);
-        return index;
+        return pieces.findIndex(item => item.row == row && item.column == column);
+    }
+
+    findIndexOfPlayer(pieces: MazePiece[], player: number) : number {        
+        return pieces.findIndex(item => item.player == player);
+    }
+
+    findIndexOfTreasure(pieces: MazePiece[], player: number) : number {        
+        return pieces.findIndex(item => item.treasureForPlayer == player);
+    }
+
+    setSizeAxisXandY(axisX: number, axisY: number) : void {
+        this.defaultSizeAxisX = axisX;
+        this.defaultSizeAxisY = axisY;
     }
 
 }
