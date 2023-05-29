@@ -3,6 +3,7 @@ import { MazePiece } from "../models/MazePiece";
 import { PieceImages } from "./PieceImages";
 import { ComputerInsert } from '../models/ComputerInsert';
 import { ComputerMove } from "../models/ComputerMove";
+import { MazePaths } from "../models/MazePaths";
 
 describe('Class ComputerPlayer', () => {
 
@@ -105,6 +106,39 @@ describe('Class ComputerPlayer', () => {
 
     let targetPlayer: number = 0;
 
+    //For private methods:
+    let treasureRow: number = 2;
+    let treasureColumn: number = 2;
+
+    //For private methods: test for maze: 5 x 5.
+    let testPaths: MazePaths[] = [
+        new MazePaths(0, 0),
+        new MazePaths(0, 1),
+        new MazePaths(0, 2),
+        new MazePaths(0, 3),
+        new MazePaths(0, 4),
+        new MazePaths(1, 0),
+        new MazePaths(1, 1),
+        new MazePaths(1, 2),
+        new MazePaths(1, 3),
+        new MazePaths(1, 4),
+        new MazePaths(2, 0),
+        new MazePaths(2, 1),
+        new MazePaths(2, 2),
+        new MazePaths(2, 3),
+        new MazePaths(2, 4),
+        new MazePaths(3, 0),
+        new MazePaths(3, 1),
+        new MazePaths(3, 2),
+        new MazePaths(3, 3),
+        new MazePaths(3, 4),
+        new MazePaths(4, 0),
+        new MazePaths(4, 1),
+        new MazePaths(4, 2),
+        new MazePaths(4, 3),
+        new MazePaths(4, 4)
+    ];
+
     it('test method computerInsertCalculation() testMaze001 - treasure in middle', () => {
         //Test 10 inserts -> but treasure should stay at the middle. -> row and column at index: 1 should not be affected.
         for(let i = 0; i < 30; i++) {
@@ -177,6 +211,80 @@ describe('Class ComputerPlayer', () => {
         expect(cpuMove.canMove).toBeTrue();
         expect(cpuMove.row).toBe(2);
         expect(cpuMove.column).toBe(2);
+    });
+
+    it('test private method: calculateDistances()', () => {
+        let expectations: number[] = [4, 3, 2, 3, 4, 3, 2, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 2, 3, 4, 3, 2, 3, 4];
+
+        //@ts-ignore
+        let distances: number[] = testClass.calculateDistances(testPaths, treasureRow, treasureColumn);
+
+        for(let i = 0; i < distances.length; i++) {
+            expect(distances[i]).toBe(expectations[i]);
+        }
+    });
+
+    it('test private method: searchBestInsert()', () => {
+        let allPaths: MazePaths[] = [
+            new MazePaths(1, 1, 8),
+            new MazePaths(2, 2, 2), //This is the best insert.
+            new MazePaths(3, 3, 5),
+            new MazePaths(4, 4, 4),
+            new MazePaths(5, 5, 3)
+        ];
+
+        //@ts-ignore
+        let bestPath: MazePaths = testClass.searchBestInsert(allPaths);
+
+        expect(bestPath.row).toBe(2);
+        expect(bestPath.column).toBe(2);
+    });
+
+    it('test private method: getLowestNumberIndexes()', () => {
+        //@ts-ignore
+        let distances: number[] = testClass.calculateDistances(testPaths, treasureRow, treasureColumn);
+        
+        //Result: best at index 12
+        //let expectations: number[] = [4, 3, 2, 3, 4, 3, 2, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 2, 3, 4, 3, 2, 3, 4];
+
+        //@ts-ignore
+        let lowestNumbers: number[] = testClass.getLowestNumberIndexes(distances, 0);
+
+        expect(lowestNumbers[0]).toBe(12);
+    });
+
+    it('test private method: filterPaths()', () => {
+        let morePlayersInMaze: MazePiece[] = structuredClone(testMaze001);
+        morePlayersInMaze[3].player = 1;
+        morePlayersInMaze[5].player = 2;
+        morePlayersInMaze[7].player = 3;
+
+        //'Zig-zag' through maze.
+        let paths: MazePaths[] = [
+            new MazePaths(0, 0),
+            new MazePaths(0, 1),
+            new MazePaths(0, 2),
+            new MazePaths(1, 2),
+            new MazePaths(1, 1),
+            new MazePaths(1, 0),
+            new MazePaths(2, 0),
+            new MazePaths(2, 1),
+            new MazePaths(2, 2)
+        ];
+
+        //@ts-ignore
+        let filteredPaths: MazePaths[] = testClass.filterPaths(morePlayersInMaze, paths, targetPlayer);
+
+        expect(filteredPaths.length).toBe(6);
+    });
+
+    it('test private method: generateNumberWithSkip()', () => {
+        let someNumbers: number[] = [1, 4, 5, 8, 10, 13, 15, 17];
+
+        //@ts-ignore
+        let generatedNumber: number = testClass.generateNumberWithSkip(13, someNumbers);
+
+        expect(generatedNumber).not.toBe(13);
     });
 
 });

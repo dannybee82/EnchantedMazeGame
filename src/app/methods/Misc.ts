@@ -1,5 +1,6 @@
 import { RandomNumbers } from "../shared_methods/RandomNumbers";
 import { CommonArrayFunctions } from "../shared_methods/CommonArrayFunctions";
+import { MazePiece } from "../models/MazePiece";
 
 export class Misc {
 
@@ -32,5 +33,14 @@ export class Misc {
     public minimumDifficulty: number = 1;
     public maximumDifficulty: number = 3;
 
+    /**
+     * Methods.
+     * 
+     */
+
+    findIndexOfPiece(pieces: MazePiece[], row: number, column: number) : number {
+        let index: number = pieces.findIndex(item => item.row == row && item.column == column);
+        return index;
+    }
 
 }

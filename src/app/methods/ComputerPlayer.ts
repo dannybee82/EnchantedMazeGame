@@ -294,14 +294,10 @@ export class ComputerPlayer extends Controls {
             let currentColumn: number = currentPath.column;
 
             let foundIndex: number = pieces.findIndex(item => item.row == currentRow && item.column == currentColumn);
-
+            
             if(foundIndex > -1) {
-                if(pieces[foundIndex].player == -1) {
+                if(pieces[foundIndex].player == -1 || pieces[foundIndex].player == player) {
                     filtered.push(currentPath);
-                } else {
-                    if(pieces[foundIndex].player == player) {
-                        filtered.push(currentPath);
-                    }
                 }
             }
         }

@@ -292,7 +292,11 @@ export class EnchantedMazeComponent extends ComputerPlayer {
   }
 
   checkTreasure(indexPlayer: number, destination: number) : void {
-    this.pieces = this.move(this.pieces, this._playerPaths, destination, indexPlayer, this._playersTurn);
+    if(this.humanOrComputer[this._playersTurn]) {
+      this.pieces = this.showPlayerPaths(this.pieces, this._playerPaths, false);
+    }
+
+    this.pieces = this.move(this.pieces, destination, indexPlayer, this._playersTurn);
 
     if (this.hasTreasure(this.pieces, destination, this._playersTurn)) {
       this.score[this._playersTurn]++;
@@ -312,14 +316,14 @@ export class EnchantedMazeComponent extends ComputerPlayer {
           this.playersTreasures[this._playersTurn].treasureImage = nextTreasure.treasureImage;
         }
 
-        this.pieces = this.move(this.pieces, this._playerPaths, destination, indexPlayer, this._playersTurn);
+        this.pieces = this.move(this.pieces, destination, indexPlayer, this._playersTurn);
         this.endTurn();
       } else {
-        this.pieces = this.move(this.pieces, this._playerPaths, destination, indexPlayer, this._playersTurn);
+        this.pieces = this.move(this.pieces, destination, indexPlayer, this._playersTurn);
         this.finishGame();
       }            
     } else {
-      this.pieces = this.move(this.pieces, this._playerPaths, destination, indexPlayer, this._playersTurn);
+      this.pieces = this.move(this.pieces, destination, indexPlayer, this._playersTurn);
       this.endTurn();
     }
   }
@@ -328,9 +332,14 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     return new Promise<boolean>((resolve) => {      
       //Animate.
       let index: number = 1;
-
       const interval = setInterval(() => {
-        this.pieces = this.moveToDestinations(this.pieces, shortestRoute[index - 1], shortestRoute[index], this._playersTurn);
+        let playerIndex: number = this.findIndexOfPiece(this.pieces, shortestRoute[index - 1][0], shortestRoute[index - 1][1]);
+        let destinationIndex: number = this.findIndexOfPiece(this.pieces, shortestRoute[index][0], shortestRoute[index][1]);
+
+        if(playerIndex > - 1 && destinationIndex > -1) {
+          this.pieces = this.move(this.pieces, destinationIndex,  playerIndex, this._playersTurn);
+        }
+        
         index++;
 
         if (index == shortestRoute.length) {

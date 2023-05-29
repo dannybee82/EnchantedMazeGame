@@ -45,7 +45,7 @@ export class Controls extends SearchMazePath {
         } else {
             //Axis X -> insert in row -> left or right -> will affect columns.
             this.reorderColumns();
-        }
+        }        
 
        return this.replacePieces(pieces);        
     }
@@ -59,18 +59,20 @@ export class Controls extends SearchMazePath {
     }
 
     canMove(pieces: MazePiece[], playerPaths: MazePaths[], indexFound: number, player: number) : boolean {
-        let path: MazePaths = playerPaths[indexFound];
-        let indexPlayer: number = pieces.findIndex(item => item.player == player);
-        let destination: number = pieces.findIndex(item => item.row == path.row && item.column == path.column);
+        if(indexFound < playerPaths.length) {
+            let path: MazePaths = playerPaths[indexFound];
+            let indexPlayer: number = pieces.findIndex(item => item.player == player);
+            let destination: number = pieces.findIndex(item => item.row == path.row && item.column == path.column);
 
-        let canMove: boolean = true;
+            let canMove: boolean = true;
 
-        if(pieces[destination].player > -1 && pieces[destination].player != player) {          
-          canMove = false;
-        }
+            if(pieces[destination].player > -1 && pieces[destination].player != player) {          
+                canMove = false;
+            }
 
-        if(indexPlayer > -1 && destination > -1 && canMove) {
-            return true;
+            if(indexPlayer > -1 && destination > -1 && canMove) {
+                return true;
+            }
         }
 
         return false;
@@ -92,24 +94,9 @@ export class Controls extends SearchMazePath {
         return false;
     }
 
-    move(pieces: MazePiece[], paths: MazePaths[], destination: number, indexPlayer: number, player: number) : MazePiece[] {
-        //Undo player paths.
-        pieces = this.showPlayerPaths(pieces, paths, false);
-
+    move(pieces: MazePiece[], destination: number, indexPlayer: number, player: number) : MazePiece[] {
         pieces[destination].player = player;
         pieces[indexPlayer].player = -1;
-
-        return pieces;
-    }
-
-    moveToDestinations(pieces: MazePiece[], start: number[], destination: number[], player: number) : MazePiece[] {
-        let startIndex: number = pieces.findIndex(item => item.row == start[0] && item.column == start[1]);
-        let destinationIndex: number = pieces.findIndex(item => item.row == destination[0] && item.column == destination[1]);
-
-        if(startIndex > -1 && destinationIndex > -1) {
-            pieces[destinationIndex].player = player;
-            pieces[startIndex].player = -1;
-        }        
 
         return pieces;
     }
