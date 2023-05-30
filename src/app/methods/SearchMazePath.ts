@@ -163,26 +163,36 @@ export class SearchMazePath extends Matrix {
         let rowDistance: number = row - destination[0];
         let columnDistance: number = column - destination[1];
 
-        if (rowDistance <= 0) {
+        if (rowDistance > 0) {
             arr[0] = 0; //North
             arr[2] = 2; //South
-        } else {
+        } else if(rowDistance < 0) {
             arr[0] = 2; //South
             arr[2] = 0; //North
         }
 
-        if (columnDistance <= 0) {
+        if (columnDistance < 0) {
             arr[1] = 1; //East
             arr[3] = 3; //West
-        } else {
+        } else if(columnDistance > 0) {
             arr[1] = 3; //West
             arr[3] = 1; //East
         }
 
-        // if(columnDistance <= rowDistance) {
-        //     arr = this.commonArrayFunctions.swap(arr, 0, 1);
-        //     arr = this.commonArrayFunctions.swap(arr, 2, 3);
-        // }
+        if(rowDistance == 0 && columnDistance != 0) {
+            arr[0] = (columnDistance < 0) ? 1 : 3;
+            arr[1] = (columnDistance > 0) ? 1 : 3;
+            arr[2] = 0;
+            arr[3] = 2;
+        } else if(rowDistance != 0 && columnDistance == 0) {
+            arr[0] = (rowDistance > 0) ? 0 : 2;
+            arr[1] = (rowDistance < 0) ? 0 : 2;
+            arr[2] = 1;
+            arr[3] = 3;
+        } else if(rowDistance == 0 && columnDistance == 0) {
+            //Default.
+            arr = this.commonArrayFunctions.fillNumberArray(4, 0, true);
+        }
 
         return arr;
     }
@@ -192,7 +202,7 @@ export class SearchMazePath extends Matrix {
         checkedPaths.push(paths[0]);
 
         for (let i = 1; i < paths.length; i++) {
-            let foundIndex: number = pieces.findIndex(item => item.row == paths[i][0] && item.column == paths[i][1]);
+            let foundIndex: number = this.findIndexOfPiece(pieces, paths[i][0], paths[i][1]);
 
             if (foundIndex > -1) {
                 if (pieces[foundIndex].player == -1) {

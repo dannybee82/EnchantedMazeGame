@@ -136,9 +136,9 @@ describe('Class SearchMazePath', () => {
         
         let shortestWay: number[][] = testClass.findShortestWay(testMaze5x5, paths, testMaze5x5[playerIndex].row, testMaze5x5[playerIndex].column, 
                                                                 testMaze5x5[treasureIndex].row, testMaze5x5[treasureIndex].column );
-
-        let expectations: number[][] = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,4],[2,4],[3,4],[4,4]];
-
+        
+        let expectations: number[][] = [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]];
+                                        
         expect(shortestWay).toEqual(expectations);
     });
 
@@ -155,23 +155,29 @@ describe('Class SearchMazePath', () => {
         
         let shortestWay: number[][] = testClass.findShortestWay(testMaze5x5, paths, testMaze5x5[playerIndex].row, testMaze5x5[playerIndex].column, 
                                                                 testMaze5x5[treasureIndex].row, testMaze5x5[treasureIndex].column );
-    
-        let expectations: number[][] = [[0,0],[1,0],[2,0],[3,0],[3,1],[3,2],[3,3],[3,4],[4,4]];
-
+           
+        let expectations: number[][] = [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]];
+                                        
         expect(shortestWay).toEqual(expectations);
     });
 
-    it('test method: findShortestWay() - maze 5x5 - test 3', () => {
+    it('test method: findShortestWay() - maze 5x5 - test 3 - path through middle', () => {
         //Below: open shorter path by pieces that are open from all sides.
-        let testMaze5x5: MazePiece[] = getMaze5x5();
-        testMaze5x5[1].pieceNumber = 1; 
-        testMaze5x5[3].pieceNumber = 0; //close 3
-        testMaze5x5[3].orientation = 0; //close 3   
-        testMaze5x5[7].pieceNumber = 1;
-        testMaze5x5[13].pieceNumber = 1;
-        testMaze5x5[14].pieceNumber = 0; //close 14
-        testMaze5x5[14].orientation = 1; //close 14.
-        testMaze5x5[18].pieceNumber = 1;
+        let testMaze5x5: MazePiece[] = getMaze5x5();        
+        testMaze5x5[2].pieceNumber = 1; //open
+        testMaze5x5[5].orientation = 0; //Close
+        testMaze5x5[5].pieceNumber = 0; //Close
+        testMaze5x5[5].orientation = 1; //Close
+        testMaze5x5[7].pieceNumber = 1; //open
+        testMaze5x5[8].pieceNumber = 0; //Close
+        testMaze5x5[8].orientation = 1; //Close
+        testMaze5x5[12].pieceNumber = 1; //open
+        testMaze5x5[13].pieceNumber = 0; //Close
+        testMaze5x5[13].orientation = 1; //Close
+        testMaze5x5[17].pieceNumber = 1; //open
+        testMaze5x5[18].pieceNumber = 0; //Close
+        testMaze5x5[18].orientation = 1; //Close
+        testMaze5x5[22].pieceNumber = 1; //open
 
         let paths: MazePaths[] = testClass.search(playerNumber, testMaze5x5);
         let playerIndex: number = misc.findIndexOfPlayer(testMaze5x5, playerNumber);
@@ -179,15 +185,14 @@ describe('Class SearchMazePath', () => {
         
         let shortestWay: number[][] = testClass.findShortestWay(testMaze5x5, paths, testMaze5x5[playerIndex].row, testMaze5x5[playerIndex].column, 
                                                                 testMaze5x5[treasureIndex].row, testMaze5x5[treasureIndex].column );
-    
-        let expectations: number[][] = [[0,0],[1,0],[2,0],[2,1],[2,2],[2,3],[3,3],[3,4],[4,4]];
+            
+        let expectations: number[][] = [[0,0],[0,1],[0,2],[1,2],[2,2],[3,2],[4,2],[4,3],[4,4]];
 
         //not perfect, but acceptable.
         expect(shortestWay).toEqual(expectations);
     });
 
     it('test method: findShortestWay() - maze 5x5 - test 4 -> from south to north', () => {        
-        //Below: close some paths.
         let testMaze5x5: MazePiece[] = getMaze5x5();
         testMaze5x5[0].player = -1;
         testMaze5x5[0].treasureForPlayer = 0;
@@ -200,12 +205,9 @@ describe('Class SearchMazePath', () => {
         
         let shortestWay: number[][] = testClass.findShortestWay(testMaze5x5, paths, testMaze5x5[playerIndex].row, testMaze5x5[playerIndex].column, 
                                                                 testMaze5x5[treasureIndex].row, testMaze5x5[treasureIndex].column );
-    
-        let expectations: number[][] = [[4,4],[4,3],[4,2],[4,1],[4,0],[3,0],[3,1],[2,1],[2,0],[1,0],[1,1],[0,1],[0,0]];
+        
+        let expectations: number[][] = [[4,4],[3,4],[2,4],[1,4],[0,4],[0,3],[0,2],[0,1],[0,0]];
 
-        //console.log(JSON.stringify(shortestWay));
-
-        //Again, not perfect but acceptable.
         expect(shortestWay).toEqual(expectations);
     });
 
@@ -218,12 +220,11 @@ describe('Class SearchMazePath', () => {
         testMaze5x5[6].orientation = 0;
         testMaze5x5[11].orientation = 0;
         testMaze5x5[16].orientation = 0;
-
-        testMaze5x5[14].pieceNumber = 0; //replace piece.
-        testMaze5x5[14].orientation = 1;
-        testMaze5x5[17].pieceNumber = 1;
-        testMaze5x5[12].pieceNumber = 1;
+        testMaze5x5[17].pieceNumber = 1; //replace piece.
+        testMaze5x5[18].pieceNumber = 1; //replace piece.                
+        testMaze5x5[12].pieceNumber = 0; //replace piece.
         testMaze5x5[12].treasureForPlayer = 0;
+        testMaze5x5[24].pieceNumber = 1; //replace piece.     
 
         let paths: MazePaths[] = testClass.search(playerNumber, testMaze5x5);
         let playerIndex: number = misc.findIndexOfPlayer(testMaze5x5, playerNumber);
@@ -231,11 +232,87 @@ describe('Class SearchMazePath', () => {
         
         let shortestWay: number[][] = testClass.findShortestWay(testMaze5x5, paths, testMaze5x5[playerIndex].row, testMaze5x5[playerIndex].column, 
                                                                 testMaze5x5[treasureIndex].row, testMaze5x5[treasureIndex].column );
-    
-        let expectations: number[][] = [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[4,2],[4,3],[3,3],[3,2],[2,2]];
-
+        //console.log(JSON.stringify(shortestWay));
+        let expectations: number[][] = [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4],[3,4],[2,4],[2,3],[2,2]];
+                                       
         //not perfect, but again, acceptable.
         expect(shortestWay).toEqual(expectations);
+    });
+
+    it('test private method: getPrioritiesOfDirection()', () => {
+        let startRow: number = 2;
+        let startColumn: number = 2;
+        let destinations: number[][] = [[0, 1],
+                                        [1, 4],
+                                        [4, 1],
+                                        [4, 3],
+                                        [2, 0],
+                                        [2, 4],
+                                        [0, 2],
+                                        [4, 2],
+                                        [2, 2]];
+        
+        //expectations: 0 for North, 1 for East, 2 for South, 3 for West.
+        let expectations: number[][] = [[0, 3, 2, 1],
+                                        [0, 1, 2, 3],
+                                        [2, 3, 0, 1],
+                                        [2, 1, 0, 3],
+                                        [3, 1, 0, 2],
+                                        [1, 3, 0, 2],
+                                        [0, 2, 1, 3],
+                                        [2, 0, 1, 3],
+                                        [0, 1, 2, 3]
+                                    ];
+
+        for(let i = 0; i < destinations.length; i++) {
+            //@ts-ignore
+            expect(testClass.getPrioritiesOfDirection(startRow, startColumn, destinations[i])).toEqual(expectations[i]);
+
+            //@ts-ignore
+            //console.log(JSON.stringify(destinations[i]) + "::" + JSON.stringify(testClass.getPrioritiesOfDirection(startRow, startColumn, destinations[i])) + "::" + JSON.stringify(expectations[i]))
+        }
+    });
+
+    it('test private method: checkOtherPlayersAtPath()', () => {        
+        let testMaze5x5: MazePiece[] = getMaze5x5();
+        testMaze5x5[5].player = 1; //Add player.
+        testMaze5x5[10].player = 2; //Add player.
+        testMaze5x5[21].player = 3; //Add player.
+        testMaze5x5[23].player = 4; //Add player.
+
+        let paths: MazePaths[] = testClass.search(playerNumber, testMaze5x5);
+        let playerIndex: number = misc.findIndexOfPlayer(testMaze5x5, playerNumber);
+        let treasureIndex: number = misc.findIndexOfTreasure(testMaze5x5, playerNumber);
+        
+        let shortestWay: number[][] = testClass.findShortestWay(testMaze5x5, paths, testMaze5x5[playerIndex].row, testMaze5x5[playerIndex].column, 
+                                                                testMaze5x5[treasureIndex].row, testMaze5x5[treasureIndex].column );
+        
+        //@ts-ignore
+        shortestWay = testClass.checkOtherPlayersAtPath(testMaze5x5, shortestWay);
+
+        expect(shortestWay.length).toBe(5); //9 - 4 = 5.
+    });
+
+    it('test private method: checkStartAndDestinationNotAdjacent()', () => {
+        let starts: number[][] = [[0, 1],
+                                  [1, 0], 
+                                  [2, 2],
+                                  [4, 1]];
+
+        let destinations: number[][] = [ [0, 2],
+                                         [0, 0],
+                                         [2, 4],
+                                         [3, 3] ];
+
+        let expectations: boolean[] = [false, //adjacent.
+                                       false, //adjacent.
+                                       true, //not adjacent.
+                                       true]; //not adjacent.
+        
+        for (let i = 0; i < expectations.length; i++) {
+            //@ts-ignore
+            expect(testClass.checkStartAndDestinationNotAdjacent(starts[i], destinations[i])).toBe(expectations[i]);
+        }                        
     });
 
 
