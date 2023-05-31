@@ -36,6 +36,8 @@ export class Misc {
     public minimumDifficulty: number = 1;
     public maximumDifficulty: number = 3;
 
+    private _minimumAxisSize: number = 3;
+
     /**
      * Methods.
      * 
@@ -54,8 +56,8 @@ export class Misc {
     }
 
     setSizeAxisXandY(axisX: number, axisY: number) : void {
-        this.defaultSizeAxisX = axisX;
-        this.defaultSizeAxisY = axisY;
+        this.defaultSizeAxisX = (axisX < this._minimumAxisSize) ? this._minimumAxisSize : axisX;
+        this.defaultSizeAxisY = (axisY < this._minimumAxisSize) ? this._minimumAxisSize : axisY;
     }
 
 }

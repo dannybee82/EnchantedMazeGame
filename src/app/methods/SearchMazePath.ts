@@ -1,5 +1,4 @@
 import { MazePiece } from "../models/MazePiece";
-import { PiecesEntryPoints } from "./PiecesEntryPoints";
 import { MazePaths } from "../models/MazePaths";
 import { PieceImages } from "./PieceImages";
 import { Matrix } from "./Matrix";

@@ -1,9 +1,8 @@
 import { MazePaths } from "../models/MazePaths";
 import { MazePiece } from "../models/MazePiece";
-import { CommonArrayFunctions } from "../shared_methods/CommonArrayFunctions";
 import { PiecesEntryPoints } from "./PiecesEntryPoints";
 
-export class Matrix extends PiecesEntryPoints{
+export class Matrix extends PiecesEntryPoints {
 
     createAndFillMatrix(paths: MazePaths[], sizeX: number, sizeY: number) : number[][] {
         let matrix: number[][] = [];
