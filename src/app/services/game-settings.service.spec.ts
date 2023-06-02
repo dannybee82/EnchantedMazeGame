@@ -59,6 +59,15 @@ describe('GameSettingsService', () => {
     }
   });
 
+  it('test method: setUseRandomStartLocations() & getUseRandomStartLocations()', () => {
+    //Default value.
+    expect(service.getRandomStartLocations()).toBeFalse();
+
+    service.setRandomStartLocations(true);
+
+    expect(service.getRandomStartLocations()).toBeTrue();
+  });
+
   it('test method resetDefaults()', () => {
     service.setAmountOfPlayers(3);
     service.setAmountOfTreasures(12);

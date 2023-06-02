@@ -48,12 +48,24 @@ export class MazeService {
     }
   }
 
-  addPlayers(amountOfPlayers: number) : void {
-    let startPoints: number[] = [0, 8, 72, 80];
+  addPlayers(amountOfPlayers: number, isRandomStartLocations: boolean) : void {
+    if(isRandomStartLocations) {
+      for (let i = 0; i < amountOfPlayers; i++) {
+        let randomStartPosition: number = this._randomNumbers.generateRandomNumber(0, this._mazePieces.length);
 
-    for (let i = 0; i < amountOfPlayers; i++) {
-      let point: number = startPoints[i];
-      this._mazePieces[point].player = i;
+        while(this._mazePieces[randomStartPosition].player > -1) {
+          randomStartPosition = this._randomNumbers.generateRandomNumber(0, this._mazePieces.length);
+        }
+
+        this._mazePieces[randomStartPosition].player = i;
+      }
+    } else {
+      let startPoints: number[] = [0, 8, 72, 80];
+
+      for (let i = 0; i < amountOfPlayers; i++) {
+        let point: number = startPoints[i];
+        this._mazePieces[point].player = i;
+      }
     }
   }
 

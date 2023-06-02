@@ -19,6 +19,7 @@ export class GameSettingsService extends Misc {
   private _amountOfTreasures: number = -1;
   private _humanOrCpu: boolean[] = [];
   private _difficulty: number = 1;
+  private _randomStartLocations: boolean = false;
 
   /**
    * Subjects.
@@ -95,6 +96,14 @@ export class GameSettingsService extends Misc {
     return this._difficulty;
   }
 
+  setRandomStartLocations(value: boolean) : void {
+    this._randomStartLocations = value;
+  }
+  
+  getRandomStartLocations() : boolean {
+    return this._randomStartLocations;
+  }
+  
   /**
    * Other methods.
    * 

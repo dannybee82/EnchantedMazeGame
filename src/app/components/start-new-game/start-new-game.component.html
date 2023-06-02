@@ -82,6 +82,16 @@
             <span class="text-danger" *ngIf="!player">Computer</span>
         </div>
     </div>
+    <div class="row p-0 mb-4">
+        <div class="col-auto">
+            <button class="btn" [class.text-light]="!this.randomStartPositions" [class.bg-primary]="!this.randomStartPositions" [class.bg-warning]="this.randomStartPositions" [class.text-dark]="this.randomStartPositions" title="Start Positions" (click)="this.changeStartPositions()" >
+                <i class="bi bi-toggle-off" *ngIf="!this.randomStartPositions" ></i>
+                <i class="bi bi-toggle-on" *ngIf="this.randomStartPositions" ></i>
+                <span class="ms-2" *ngIf="!this.randomStartPositions">Default start positions</span>
+                <span class="ms-2" *ngIf="this.randomStartPositions">Random start positions</span>
+            </button>
+        </div>
+    </div>
     <div class="row mt-2">
         <div class="col-auto">
             <button class="btn bg-success text-light p-2" title="Start New Game" (click)="this.startNewGame()">

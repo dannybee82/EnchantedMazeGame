@@ -468,8 +468,9 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     let amountOfTreasures: number = this.gameSettingsService.getAmountOfTreasures();
     let difficulty = this.gameSettingsService.getDifficulty();
 
+    let useRandomStartLocations: boolean = this.gameSettingsService.getRandomStartLocations();
     this.mazeService.generate(difficulty);
-    this.mazeService.addPlayers(amountOfPlayers);
+    this.mazeService.addPlayers(amountOfPlayers, useRandomStartLocations);
     
     this.currentPiece = this.mazeService.generateStartPiece();  
 

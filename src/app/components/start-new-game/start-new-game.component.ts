@@ -19,6 +19,8 @@ export class StartNewGameComponent {
 
   public difficulty: number = 1;
 
+  public randomStartPositions: boolean = false;
+
   constructor(private gameSettingsService: GameSettingsService) {}
 
   ngOnInit() {
@@ -56,11 +58,16 @@ export class StartNewGameComponent {
     this.difficulty = value;
   }
 
+  changeStartPositions() : void {
+    this.randomStartPositions = !this.randomStartPositions;
+  }
+
   startNewGame() : void {
     this.gameSettingsService.setAmountOfPlayers(this.amountOfPlayers);
     this.gameSettingsService.setAmountOfTreasures(this.amountOfTreasures);
     this.gameSettingsService.setHumanOrCpu(this.humanOrCpu);
     this.gameSettingsService.setDifficulty(this.difficulty);
+    this.gameSettingsService.setRandomStartLocations(this.randomStartPositions);
     this.gameSettingsService.setStartGame(true);
   }
   
