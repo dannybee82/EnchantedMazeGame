@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EnchantedMazeComponent } from './enchanted-maze.component';
+import { TurnAndScoreboardComponent } from '../turn-and-scoreboard/turn-and-scoreboard.component';
 
 describe('EnchantedMazeComponent', () => {
   let component: EnchantedMazeComponent;
@@ -8,7 +9,7 @@ describe('EnchantedMazeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [EnchantedMazeComponent]
+      declarations: [EnchantedMazeComponent, TurnAndScoreboardComponent]
     });
     fixture = TestBed.createComponent(EnchantedMazeComponent);
     component = fixture.componentInstance;

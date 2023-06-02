@@ -1,0 +1,30 @@
+.player {
+    -webkit-mask:url('/assets/player/knight.png');
+    mask:url('/assets/player/knight.png');
+    width: 30px;
+    height: 40px;
+}
+
+.player:hover {
+    cursor: default;
+}
+
+.player-one {
+    color: red;
+    background-color: red;
+}
+
+.player-two {
+    color: blue;
+    background-color: blue;    
+}
+
+.player-three {
+    color: goldenrod;
+    background-color: goldenrod;
+}
+
+.player-four {
+    color: green;
+    background-color: green;
+}

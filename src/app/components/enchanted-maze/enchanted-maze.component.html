@@ -103,42 +103,7 @@
                 </button>                
             </div>
         </div>
-        <div class="row">
-            <div class="col-2">
-                Turn: {{ this.totalTurns }}
-            </div>
-            <div class="col-2">
-                Players:
-            </div>
-            <div class="col-2">
-                Treasure:
-            </div>
-            <div class="col-2">
-                Score:
-            </div>
-        </div>
-        <div class="row p-2 border border-1 border-dark rounded mb-1" *ngFor="let player of this.players">
-            <div class="col-2 p-0 mt-1">
-                <i class="bi bi-arrow-right-square-fill" style="font-size:24pt" *ngIf="this.getPlayersTurn() == player"></i>
-            </div>
-            <div class="col-2">
-                <div class="col-auto p-0 player" [class.player-one]="player == 0" [class.player-two]="player == 1"
-                [class.player-three]="player == 2" [class.player-four]="player == 3"></div>
-            </div>
-            <div class="col-2 p-0 mt-1">
-                <img [src]="this.playersTreasures[player].treasureImage" />
-            </div>
-            <div class="col-2 p-0 mt-2">
-                {{ this.score[player] }}
-            </div>
-        </div>
-        <div class="row mt-2" *ngIf="!this.isGameEnded">
-            <div class="col-auto p-0 m-0">
-                Turn of:
-            </div>
-            <div class="col-auto player player-turn p-0 m-0 ms-2" [class.player-one]="getPlayersTurn() == 0" [class.player-two]="getPlayersTurn() == 1"
-            [class.player-three]="getPlayersTurn() == 2" [class.player-four]="getPlayersTurn() == 3"></div>
-        </div>
+        <app-turn-and-scoreboard></app-turn-and-scoreboard>
         <div class="row mt-2" *ngIf="!this.isGameEnded">
             <div class="col-auto" *ngIf="!this.isPieceInserted()">
                 Insert Piece.
@@ -147,34 +112,16 @@
                 Move player.
             </div>
         </div>
-        <div class="row mt-2">
-            <div class="col-auto p-2 rounded text-light bg-danger" *ngIf="this.message !== ''">
-                {{ this.message }}
-            </div>
-        </div>
-        <div class="row mt-2" *ngIf="this.isGameEnded">
-            <div class="col-auto p-2 rounded text-light bg-success">
-                Game ended. Highest score: {{ this.getHighestScore() }}                
-            </div>
-            <div class="col-auto mt-1">
-               {{ (this.getWinningPlayers().length > 1) ? 'Winning players:' : 'Winning player:' }}
-            </div>
-            <div class="col-auto" *ngFor="let winner of this.getWinningPlayers()">
-                <div class="col-auto player player-turn p-0 m-0 ms-2" [class.player-one]="winner == 0" [class.player-two]="winner == 1"
-                [class.player-three]="winner == 2" [class.player-four]="winner == 3"></div>
-            </div>
-            <div class="col-auto">
-                <button class="btn text-light bg-primary p-2" (click)="this.backToMenu()">
-                    <i class="bi bi-arrow-return-right"></i>
-                    <span class="ms-2">Back to Menu</span>
-                </button>
-            </div>
-        </div>
         <div class="row mt-4" *ngIf="this.logMessages.length > 0" >
             <div class="row" *ngFor="let messages of this.logMessages">
                 {{ messages }}
             </div>
         </div>
-    </div>    
-
+        <div class="col-auto" *ngIf="this.isGameEnded">
+            <button class="btn text-light bg-primary p-2" (click)="this.backToMenu()">
+                <i class="bi bi-arrow-return-right"></i>
+                <span class="ms-2">Back to Menu</span>
+            </button>
+        </div>
+    </div>
 </div>

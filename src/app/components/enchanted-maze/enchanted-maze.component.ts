@@ -11,6 +11,7 @@ import { ComputerMove } from 'src/app/models/ComputerMove';
 import { GameSettingsService } from 'src/app/services/game-settings.service';
 import { MazeService } from 'src/app/services/maze.service';
 import { TreasuresService } from 'src/app/services/treasures.service';
+import { TurnAndScoreboardService } from 'src/app/services/turn-and-scoreboard.service';
 
 //Methods.
 import { ComputerPlayer } from 'src/app/methods/ComputerPlayer';
@@ -27,15 +28,9 @@ import { PieceInserted } from 'src/app/methods/Animations';
 
 export class EnchantedMazeComponent extends ComputerPlayer {
  
-  public players: number[] = [];
   public humanOrComputer: boolean[] = [];
-  public score: number[] = [];
   public pieces: MazePiece[] = [];  
   public currentPiece?: MazePiece;
-
-  public totalTurns: number = 1;
-
-  public message: string = "";
 
   private _playersTurn: number = 0;
   public insertPiece: boolean = false;
@@ -44,8 +39,6 @@ export class EnchantedMazeComponent extends ComputerPlayer {
 
   private _hint: number [] = [-1, -1];
 
-  public playersTreasures: MazeTreasures[] = [];
-
   public isGameEnded: boolean = false;
 
   public logMessages: string[] = [];  
@@ -53,7 +46,10 @@ export class EnchantedMazeComponent extends ComputerPlayer {
   private _lastInsertedAxisY: boolean = false;
   private _lastInsertedRowOrColumn: number = -1;
 
-  constructor(private gameSettingsService: GameSettingsService, private mazeService: MazeService, private treasuresService: TreasuresService) {
+  private _amountOfPlayers: number = 0;
+
+  constructor(private gameSettingsService: GameSettingsService, private mazeService: MazeService, private treasuresService: TreasuresService,
+    private turnAndScoreboardService: TurnAndScoreboardService) {
     super();
 
     //Listen for changes.
@@ -89,7 +85,8 @@ export class EnchantedMazeComponent extends ComputerPlayer {
   }
 
   insertPieceAxis(isInsertAxisY: boolean, fromTopOrLeft: boolean, rowOrcolumn: number) : void {
-    this.message = '';
+    this.turnAndScoreboardService.setMessage('');
+    this.turnAndScoreboardService.setUpdateTurnAndScore(true);
 
     if (!this.insertPiece && this.currentPiece != undefined) {
       this.pieces = this.insert(this.pieces, this.currentPiece, isInsertAxisY, fromTopOrLeft, rowOrcolumn, false);
@@ -142,9 +139,11 @@ export class EnchantedMazeComponent extends ComputerPlayer {
   }
 
   nextTurn() : void {
-    if(this._playersTurn + 1 == this.players.length) {
+    if(this._playersTurn + 1 == this._amountOfPlayers) {
       this._playersTurn = 0;
-      this.totalTurns++;
+      let currentTurns: number = this.turnAndScoreboardService.getTotalTurns();
+      this.turnAndScoreboardService.setTotalTurns(currentTurns + 1);
+      this.turnAndScoreboardService.setUpdateTurnAndScore(true);
     } else {
       this._playersTurn++;
     }
@@ -253,12 +252,14 @@ export class EnchantedMazeComponent extends ComputerPlayer {
 
       if(canContinue && indexFound == -1) {
         canContinue = false;
-        this.message = "Can't move to that place.";
+        this.turnAndScoreboardService.setMessage("Can't move to that place.");
+        this.turnAndScoreboardService.setUpdateTurnAndScore(true);
       }
 
       if(canContinue && !this.canMove(this.pieces, this._playerPaths, indexFound, this._playersTurn)) {
         canContinue = false;
-        this.message = "There is already a player at that location.";
+        this.turnAndScoreboardService.setMessage('There is already a player at that location.');
+        this.turnAndScoreboardService.setUpdateTurnAndScore(true);
       }
 
       if(canContinue) {
@@ -287,7 +288,8 @@ export class EnchantedMazeComponent extends ComputerPlayer {
         }
       }
     } else {
-      this.message = "Insert piece first";
+      this.turnAndScoreboardService.setMessage('Insert piece first');
+      this.turnAndScoreboardService.setUpdateTurnAndScore(true);
     }    
   }
 
@@ -299,7 +301,7 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     this.pieces = this.move(this.pieces, destination, indexPlayer, this._playersTurn);
 
     if (this.hasTreasure(this.pieces, destination, this._playersTurn)) {
-      this.score[this._playersTurn]++;
+      this.turnAndScoreboardService.updateScore(this._playersTurn);
       this.pieces[destination].hasTreasure = false;
       this.pieces[destination].treasureForPlayer = -1;
       this.pieces[destination].treasureImage = '';
@@ -313,7 +315,9 @@ export class EnchantedMazeComponent extends ComputerPlayer {
 
         if (nextTreasure != undefined) {
           this.pieces = this.mazeService.placeTreasureInMaze(this.pieces, nextTreasure, this._playersTurn);
-          this.playersTreasures[this._playersTurn].treasureImage = nextTreasure.treasureImage;
+          let allPlayersTreasures: MazeTreasures[] = this.turnAndScoreboardService.getPlayersTreasures();
+          allPlayersTreasures[this._playersTurn].treasureImage = nextTreasure.treasureImage;
+          this.turnAndScoreboardService.setPlayersTreasures(allPlayersTreasures);
         }
 
         this.pieces = this.move(this.pieces, destination, indexPlayer, this._playersTurn);
@@ -376,8 +380,8 @@ export class EnchantedMazeComponent extends ComputerPlayer {
   }
 
   getTreasureImage(player: number) : string {
-    if(this.playersTreasures.length > 0) {
-      return this.playersTreasures[player].treasureImage;
+    if(this.turnAndScoreboardService.getPlayersTreasures().length > 0) {
+      return this.turnAndScoreboardService.getPlayersTreasures()[player].treasureImage;
     }
 
     return "";
@@ -422,25 +426,7 @@ export class EnchantedMazeComponent extends ComputerPlayer {
 
     return "";
   }
-
-  getHighestScore() : number {
-    return Math.max(...this.score);
-  }
-
-  getWinningPlayers() : number[] {
-    let winning: number[] = [];
-
-    let highestScore: number = this.getHighestScore();
-
-    for(let i = 0; i < this.score.length; i++) {
-      if(this.score[i] == highestScore) {
-        winning.push(i);
-      }
-    }    
-
-    return winning;
-  }
-
+  
   showHint() : void {
     if(this.currentPiece != undefined) {
       let hint: ComputerInsert = this.computerInsertCalculation(this.pieces, this.currentPiece, this._playersTurn, this.fixedRowAndColumnIndexes);
@@ -466,12 +452,13 @@ export class EnchantedMazeComponent extends ComputerPlayer {
   }
 
   private endTurn() : void {
-    this.message = "";
+    this.turnAndScoreboardService.setMessage('');
     this._hint = [-1, -1];
     this._playerPaths = [];
     this.clearPaths();
     this.nextTurn();
     this.insertPiece = false;
+    this.turnAndScoreboardService.setUpdateTurnAndScore(true);
   }
 
   private setupNewGame() {
@@ -489,18 +476,20 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     this.treasuresService.generateTreasures(amountOfTreasures, amountOfPlayers);
     let treasures: MazeTreasures[] = this.treasuresService.getMazeTreasures();
     
-    this.players = this.commonArrayFunctions.fillNumberArray(amountOfPlayers, 0, true);
-    this.score = this.commonArrayFunctions.fillNumberArray(amountOfPlayers, 0, false);
+    this.turnAndScoreboardService.setPlayers(amountOfPlayers);
+    this._amountOfPlayers = amountOfPlayers;
+    this.turnAndScoreboardService.setScore(amountOfPlayers);
     this.humanOrComputer = this.gameSettingsService.getHumanOrCpu();
     
     this.pieces = this.mazeService.getAllPieces();
 
-    for(let i = 0; i < this.players.length; i++) {
+    for(let i = 0; i < this._amountOfPlayers; i++) {
       this.pieces = this.mazeService.placeTreasureInMaze(this.pieces, treasures[i], i);
     }
 
-    this.playersTreasures = this.treasuresService.getPlayersTreasures();    
+   this.turnAndScoreboardService.setPlayersTreasures( this.treasuresService.getPlayersTreasures() );
 
+    this.turnAndScoreboardService.setFirstInitialization(true);
     this.currentTurnForHumanOrComputer();
   }
 
@@ -508,23 +497,20 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     this.insertPiece = true;
     this._playerPaths = [];
     this.isGameEnded = true;
+    this.turnAndScoreboardService.setIsGameEnded(true);
+    this.turnAndScoreboardService.setUpdateTurnAndScore(true);
   }
 
   private resetDefaults() : void {
-    this.players= [];
     this.humanOrComputer = [];
-    this.score = [];
     this.pieces = [];  
     this.currentPiece = undefined;
-    this.totalTurns = 1;
-  
-    this.message = "";
+
     this._playersTurn = 0;
     this.insertPiece = false;
     this._playerPaths = [];
   
     this._hint = [-1, -1];
-    this.playersTreasures = [];
     this.logMessages = [];
 
     this._lastInsertedAxisY = false;
@@ -533,6 +519,7 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     this.clearPaths();
     this.mazeService.clearAllPieces();
     this.treasuresService.clearMazeTreasures();
+    this.turnAndScoreboardService.reset();
   }
 
   backToMenu() : void {

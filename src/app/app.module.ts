@@ -7,17 +7,20 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { GameSettingsService } from './services/game-settings.service';
 import { MazeService } from './services/maze.service';
 import { TreasuresService } from './services/treasures.service';
+import { TurnAndScoreboardService } from './services/turn-and-scoreboard.service';
 
 //Components
 import { AppComponent } from './app.component';
 import { EnchantedMazeComponent } from './components/enchanted-maze/enchanted-maze.component';
 import { StartNewGameComponent } from './components/start-new-game/start-new-game.component';
+import { TurnAndScoreboardComponent } from './components/turn-and-scoreboard/turn-and-scoreboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EnchantedMazeComponent,
-    StartNewGameComponent
+    StartNewGameComponent,
+    TurnAndScoreboardComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { StartNewGameComponent } from './components/start-new-game/start-new-gam
   providers: [
     GameSettingsService,
     MazeService,
-    TreasuresService
+    TreasuresService,
+    TurnAndScoreboardService
   ],
   bootstrap: [AppComponent]
 })
