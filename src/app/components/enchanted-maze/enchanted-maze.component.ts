@@ -57,6 +57,8 @@ export class EnchantedMazeComponent extends ComputerPlayer {
       next: (result) => {
         if(result) {
           this.setupNewGame();
+        } else {
+          this.resetDefaults();
         }
       }      
     });
@@ -484,11 +486,11 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     
     this.pieces = this.mazeService.getAllPieces();
 
-    for(let i = 0; i < this._amountOfPlayers; i++) {
+    for(let i = 0; i < this._amountOfPlayers; i++) {      
       this.pieces = this.mazeService.placeTreasureInMaze(this.pieces, treasures[i], i);
     }
 
-   this.turnAndScoreboardService.setPlayersTreasures( this.treasuresService.getPlayersTreasures() );
+    this.turnAndScoreboardService.setPlayersTreasures( this.treasuresService.getPlayersTreasures() );
 
     this.turnAndScoreboardService.setFirstInitialization(true);
     this.currentTurnForHumanOrComputer();
@@ -512,10 +514,15 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     this._playerPaths = [];
   
     this._hint = [-1, -1];
+
+    this.isGameEnded = false;
+
     this.logMessages = [];
 
     this._lastInsertedAxisY = false;
     this._lastInsertedRowOrColumn = -1;    
+
+    this._amountOfPlayers = 0;
 
     this.clearPaths();
     this.mazeService.clearAllPieces();

@@ -46,7 +46,7 @@ describe('MazeService', () => {
 
   it('test method: addPlayers()', () => {
     service.generate(1);
-    service.addPlayers(4);
+    service.addPlayers(4, false);
     let pieces: MazePiece[] = service.getAllPieces();
 
     let expectedStartPoints: number[] = [0, 8, 72, 80];

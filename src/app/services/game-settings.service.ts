@@ -26,7 +26,7 @@ export class GameSettingsService extends Misc {
    * 
    */
 
-  private _startGame: BehaviorSubject<boolean>;
+  private _startGame: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   /**
    * Classes.
@@ -42,8 +42,6 @@ export class GameSettingsService extends Misc {
 
   constructor() {
     super();
-
-    this._startGame = new BehaviorSubject<boolean>(false);
   }
 
   /**

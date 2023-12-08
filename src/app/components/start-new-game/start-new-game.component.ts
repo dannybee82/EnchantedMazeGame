@@ -68,6 +68,7 @@ export class StartNewGameComponent {
     this.gameSettingsService.setHumanOrCpu(this.humanOrCpu);
     this.gameSettingsService.setDifficulty(this.difficulty);
     this.gameSettingsService.setRandomStartLocations(this.randomStartPositions);
+    
     this.gameSettingsService.setStartGame(true);
   }
   

@@ -1,4 +1,8 @@
 <div class="container-fluid">
-  <app-start-new-game *ngIf="!this.isGameStarted"></app-start-new-game>
-  <app-enchanted-maze *ngIf="this.isGameStarted"></app-enchanted-maze>
+  @if (!this.isGameStarted) {
+    <app-start-new-game></app-start-new-game>
+  }
+  @if (this.isGameStarted) {
+    <app-enchanted-maze></app-enchanted-maze>
+  }
 </div>

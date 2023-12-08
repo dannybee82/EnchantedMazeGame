@@ -70,7 +70,7 @@ export class MazeService {
   }
 
   getAllPieces() : MazePiece[] {
-    return this._mazePieces;
+    return structuredClone(this._mazePieces);
   }
 
   clearAllPieces() : void {
