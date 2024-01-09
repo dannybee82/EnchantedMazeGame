@@ -18,6 +18,7 @@ import { ComputerPlayer } from 'src/app/methods/ComputerPlayer';
 
 //Animations.
 import { PieceInserted } from 'src/app/methods/Animations';
+import { EMPTY, Observable, bufferCount, concat, concatMap, defaultIfEmpty, delay, finalize, from, interval, last, lastValueFrom, map, mergeMap, of, switchMap, takeLast, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-enchanted-maze',
@@ -275,13 +276,23 @@ export class EnchantedMazeComponent extends ComputerPlayer {
           this.pieces[indexPlayer].player = -1;
 
           let shortestRoute: number[][] = this.findShortestWay(this.pieces, this._playerPaths, this.pieces[indexPlayer].row, this.pieces[indexPlayer].column, this.pieces[destination].row, this.pieces[destination].column);
-          
+
           if(shortestRoute.length > 2) {
-            this.animate(shortestRoute).then((result) => {     
-              if(result === true) {
-                this.checkTreasure(indexPlayer, destination);
-              }                      
-            })
+            let subscription = this.animateRefactored(shortestRoute).subscribe({
+              next: (positions) => {
+                if(positions.length > 0) {
+                  this.animatePositions(positions);      
+                  this.clearPreviousRoutes(positions);              
+                } else {
+                  this.checkTreasure(indexPlayer, destination); 
+                  
+                  subscription.unsubscribe();                          
+                }                              
+              },
+              complete: () => {
+                console.log('COMPLETED???');
+              }
+            });
           } else {
             this.checkTreasure(indexPlayer, destination);
           }          
@@ -334,27 +345,44 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     }
   }
 
-  animate(shortestRoute: number[][]) : Promise<boolean> {
-    return new Promise<boolean>((resolve) => {      
-      //Animate.
-      let index: number = 1;
-      const interval = setInterval(() => {
-        let playerIndex: number = this.findIndexOfPiece(this.pieces, shortestRoute[index - 1][0], shortestRoute[index - 1][1]);
-        let destinationIndex: number = this.findIndexOfPiece(this.pieces, shortestRoute[index][0], shortestRoute[index][1]);
+  animatePositions(positions: number[]) : void {
+    let playerIndex: number = this.findIndexOfPiece(this.pieces, positions[0], positions[1]);
+    let destinationIndex: number = this.findIndexOfPiece(this.pieces, positions[2], positions[3]);
 
-        if(playerIndex > - 1 && destinationIndex > -1) {
-          this.pieces = this.move(this.pieces, destinationIndex,  playerIndex, this._playersTurn);
-        }
-        
-        index++;
+    if(playerIndex > - 1 && destinationIndex > -1) {
+      this.pieces = this.move(this.pieces, destinationIndex,  playerIndex, this._playersTurn);
+    }
+  }
 
-        if (index == shortestRoute.length) {
-          this.clearPreviousRoutes(shortestRoute);
-          clearInterval(interval);
-          resolve(true); 
+  animateRefactored(shortestRoutes: number[][]) : Observable<number[]> {
+    let positions: number[] = [];
+
+    const interval$: Observable<number[]> = interval(500).pipe(
+      concatMap(x => {
+        if(x < shortestRoutes.length - 1) {
+          positions = [];
+          positions.push(shortestRoutes[x][0]);
+          positions.push(shortestRoutes[x][1]);
+          positions.push(shortestRoutes[x + 1][0]);
+          positions.push(shortestRoutes[x + 1][1]);
+          return of(positions);
         }
-      }, 500);           
-    });  
+
+        return of([]);
+      })
+    );   
+
+    return interval$;
+  }
+
+  clearPreviousRoutes(shortestRoute: number[]) : void {
+    for(let i = 0; i < shortestRoute.length; i++) {      
+      let indexFound: number = this.pieces.findIndex(item => item.row == shortestRoute[0] && item.column == shortestRoute[1]);
+
+      if(indexFound > -1) {
+        this.pieces[indexFound].player = -1;
+      }
+    }
   }
 
   isPieceAffectedByInsert(row: number, column: number) : string {
@@ -369,16 +397,6 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     }
 
     return "not-inserted";
-  }
-
-  clearPreviousRoutes(shortestRoute: number[][]) : void {
-    for(let i = 0; i < shortestRoute.length; i++) {      
-      let indexFound: number = this.pieces.findIndex(item => item.row == shortestRoute[i][0] && item.column == shortestRoute[i][1]);
-
-      if(indexFound > -1) {
-        this.pieces[indexFound].player = -1;
-      }
-    }
   }
 
   getTreasureImage(player: number) : string {
@@ -421,7 +439,7 @@ export class EnchantedMazeComponent extends ComputerPlayer {
     return false;
   }
 
-  getTreasureImageOfPiece() : string {
+  getTreasureImageOfPiece() : string {    
     if(this.currentPiece != undefined) {
       return this.currentPiece.treasureImage ?? '';
     }
