@@ -18,7 +18,7 @@ import { ComputerPlayer } from 'src/app/methods/ComputerPlayer';
 
 //Animations.
 import { PieceInserted } from 'src/app/methods/Animations';
-import { EMPTY, Observable, bufferCount, concat, concatMap, defaultIfEmpty, delay, finalize, from, interval, last, lastValueFrom, map, mergeMap, of, switchMap, takeLast, takeUntil, tap } from 'rxjs';
+import { Observable, concatMap, interval, of } from 'rxjs';
 
 @Component({
   selector: 'app-enchanted-maze',
