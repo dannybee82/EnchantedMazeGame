@@ -1,7 +1,7 @@
 import { Controls } from "./Controls";
-import { MazePiece } from "../models/MazePiece";
+import { MazePiece } from "../models/maze-piece.interface";
 import { PieceImages } from "./PieceImages";
-import { MazePaths } from "../models/MazePaths";
+import { MazePaths } from "../models/maze-paths.interface";
 
 describe('Class Controls', () => {   
 
@@ -13,10 +13,10 @@ describe('Class Controls', () => {
     //[!] Important: give the pieces a row and index number [!]
     let testMaze001: MazePiece[] = [];
 
-    let insertPiece: MazePiece = new MazePiece(-1, -1, _images.getPiecesRed()[1], 1, 0, false, -1, false, -1, -1);
+    let insertPiece: MazePiece = { row: -1, column: -1, pieceImage:  _images.getPiecesRed()[1], pieceNumber: 1, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' };
 
     let playerNumber: number = 0;
-    let treasureIndex: number = 0;
+    //let treasureIndex: number = 0;
 
     beforeEach(() => {
         testMaze001 = generateMaze();
@@ -24,17 +24,18 @@ describe('Class Controls', () => {
 
     function generateMaze() : MazePiece[] {
         let maze: MazePiece[] = [
-            new MazePiece(0, 0, _images.getPiecesRed()[3], 3, 1, false, playerNumber, false, -1, -1), //Player: 0 here.
-            new MazePiece(0, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(0, 2, _images.getPiecesRed()[3], 3, 2, false, -1, false, -1, -1),
+            //Player: 0 here.
+            { row: 0, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 1, isFixed:  false, player:  playerNumber, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 0, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 0, column: 2, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
         
-            new MazePiece(1, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-            new MazePiece(1, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(1, 2, _images.getPiecesRed()[2], 2, 2, false, -1, false, -1, -1),
-        
-            new MazePiece(2, 0, _images.getPiecesRed()[3], 3, 0, false, -1, false, -1, -1),
-            new MazePiece(2, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(2, 2, _images.getPiecesRed()[3], 3, 3, false, -1, true, 0, treasureIndex, 'Treasure Here')
+            { row: 1, column: 0, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 1, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 1, column: 2, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+
+            { row: 2, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 2, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 2, column: 2, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 3, isFixed:  false, player: -1, hasTreasure:  true, treasureForPlayer: 0, treasureImage: 'Treasure Here' }, 
         ];
         
         return maze;
@@ -72,7 +73,7 @@ describe('Class Controls', () => {
         for(let i = 0; i < axis.length; i++) {
             testMaze001 = testClass.insert(testMaze001, testInsertPiece, axis[i], topOrLeft[i], targetColumn[i], false);
             testInsertPiece = testClass.getChangedCurrentPiece();
-            let treasurePositionIndex: number = testMaze001.findIndex(item => item.treasureIndex == treasureIndex);
+            let treasurePositionIndex: number = testMaze001.findIndex(item => item.hasTreasure);
             
             expect(treasurePositionIndex).toBeGreaterThan(-1);
             expect(testMaze001[treasurePositionIndex].row).toBe(expectedPlayerRow[i]);
@@ -98,7 +99,7 @@ describe('Class Controls', () => {
 
         expect(testInsertPiece.hasTreasure).toBeTrue();
         expect(testInsertPiece.treasureForPlayer).toBe(playerNumber);
-        expect(testInsertPiece.treasureIndex).toBe(treasureIndex);
+        //expect(testInsertPiece.treasureIndex).toBe(treasureIndex);
         expect(testInsertPiece.treasureImage).toContain('Treasure Here');
     });
 
@@ -108,8 +109,8 @@ describe('Class Controls', () => {
         testMaze001[4].player =1;
 
         let paths: MazePaths[] = [
-            new MazePaths(1, 1), //position of other player.
-            new MazePaths(2, 2)  //position of treasure.
+            { row: 1, column: 1 }, //position of other player.
+            { row: 2, column: 2 } //position of treasure.
         ];
 
         expect(testClass.canMove(testMaze001, paths, 0, playerNumber)).toBeFalse();

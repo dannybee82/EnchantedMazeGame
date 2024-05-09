@@ -1,0 +1,43 @@
+.maze-border-top-and-bottom {
+    height: 40px;
+}
+
+.maze-border-side {
+    width: 40px;
+}
+
+.maze-border {
+    background-color: #000;
+}
+
+.maze-border-x-axis {
+    width: 100px;
+    text-align: center;
+}
+
+button.chevron-hover {
+    color: var(--bs-light);
+    background-color: var(--bs-dark);
+}
+
+button.chevron-hover:hover {
+    color: var(--bs-dark);
+    background-color: var(--bs-light);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button.chevron-hover:hover i {
+    color: var(--bs-dark);
+    background-color: var(--bs-light);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.maze-border-y-axis {
+    height: 100px;
+}
+
+button.has-hint {
+    background-color: goldenrod;
+}

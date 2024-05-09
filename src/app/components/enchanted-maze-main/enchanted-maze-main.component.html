@@ -1,0 +1,37 @@
+@if(this.isAllSet()) {
+    <div class="container-fluid mt-2">
+        <!-- Maze board -->
+        <div class="container enchanted-maze-game">
+            <app-enchanted-maze-board></app-enchanted-maze-board>            
+        </div>    
+        <div class="container enchanted-maze-menu">
+            <div class="row">
+                <h3>Menu</h3>
+            </div>    
+            <!-- Current Piece -->
+            <app-enchanted-maze-insert-piece></app-enchanted-maze-insert-piece>    
+
+            <!-- Show Hint -->
+            <app-enchanted-maze-hint></app-enchanted-maze-hint>
+    
+            <!-- Show Player Turn -->
+            <app-enchanted-maze-turn></app-enchanted-maze-turn>
+
+            <!-- Show Score & winners -->
+            <app-enchanted-maze-score></app-enchanted-maze-score>    
+
+            @if(this.isGameEnded()) {
+                <div class="row mb-1">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary" (click)="endGame()">
+                            <i class="bi bi-arrow-left"></i>
+                            <span class="ms-2">Back to Main Menu</span>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>    
+    </div>
+} @else {
+    Loading...
+}

@@ -1,5 +1,5 @@
-import { MazePiece } from "../models/MazePiece";
-import { MazePaths } from "../models/MazePaths";
+import { MazePiece } from "../models/maze-piece.interface";
+import { MazePaths } from "../models/maze-paths.interface";
 import { SearchMazePath } from "./SearchMazePath";
 
 export class Controls extends SearchMazePath {
@@ -7,8 +7,31 @@ export class Controls extends SearchMazePath {
     private _piecesAtAxis: MazePiece[] = [];
     private _atIndexes: number[] = [];
 
-    private _changedCurrentPiece: MazePiece = new MazePiece(-1, -1, '', -1, -1, false, -1, false, -1, -1, '');
-    private _dummyCurrentPiece: MazePiece = new MazePiece(-1, -1, '', -1, -1, false, -1, false, -1, -1, '');
+    private _changedCurrentPiece: MazePiece = {
+        row: -1,
+        column: -1,
+        pieceImage: '',
+        pieceNumber: -1,
+        orientation: -1,
+        isFixed: false,
+        player: -1,
+        hasTreasure: false,
+        treasureForPlayer: -1,
+        treasureImage: ''
+    };
+
+    private _dummyCurrentPiece:  MazePiece = {
+        row: -1,
+        column: -1,
+        pieceImage: '',
+        pieceNumber: -1,
+        orientation: -1,
+        isFixed: false,
+        player: -1,
+        hasTreasure: false,
+        treasureForPlayer: -1,
+        treasureImage: ''
+    };
 
     insert(pieces: MazePiece[], currentPiece: MazePiece, isAxisY: boolean, fromTopOrLeft: boolean, targetColumnOrRow: number, isDummy: boolean) : MazePiece[] {
         this._piecesAtAxis = [];
@@ -120,7 +143,19 @@ export class Controls extends SearchMazePath {
     }
 
     private getDefaultMazePiece() : MazePiece {
-        return new MazePiece(-1, -1, '', -1, -1, false, -1, false, -1, -1 , '');
+        const mazePiece:  MazePiece = {
+            row: -1,
+            column: -1,
+            pieceImage: '',
+            pieceNumber: -1,
+            orientation: -1,
+            isFixed: false,
+            player: -1,
+            hasTreasure: false,
+            treasureForPlayer: -1,
+            treasureImage: ''
+        };
+        return mazePiece;
     }
 
     private reorderRows() : void {

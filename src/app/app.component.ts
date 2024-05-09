@@ -1,22 +1,29 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { GameSettingsService } from './services/game-settings.service';
+import { StartNewGameComponent } from './components/start-new-game/start-new-game.component';
+import { GameSettings } from './models/game-settings.interface';
+import { EnchantedMazeMainComponent } from './components/enchanted-maze-main/enchanted-maze-main.component';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [
+    StartNewGameComponent,
+    EnchantedMazeMainComponent
+  ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrl: './app.component.scss'
 })
-export class AppComponent {  
+export class AppComponent implements OnInit {
+  title = 'Enchanted Maze Game';
 
-  public isGameStarted: boolean = false;
+  isGameStarted: WritableSignal<boolean> = signal(false);
 
-  constructor(private gameSettingsService: GameSettingsService) {
-    //Listen for changes
-    this.gameSettingsService.getStartGame().subscribe({
-      next: (result) => {
-        this.isGameStarted = result;
-      }
+  private gameSettingsService = inject(GameSettingsService);
+
+  ngOnInit(): void {
+    this.gameSettingsService.gameSettings$.subscribe((data: GameSettings) => {
+      this.isGameStarted.set(data.gameStarted);
     });
   }
 

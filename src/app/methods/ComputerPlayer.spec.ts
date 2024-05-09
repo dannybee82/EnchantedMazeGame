@@ -1,9 +1,9 @@
 import { ComputerPlayer } from "./ComputerPlayer";
-import { MazePiece } from "../models/MazePiece";
+import { MazePiece } from "../models/maze-piece.interface";
 import { PieceImages } from "./PieceImages";
-import { ComputerInsert } from '../models/ComputerInsert';
-import { ComputerMove } from "../models/ComputerMove";
-import { MazePaths } from "../models/MazePaths";
+import { ComputerInsert } from "../models/computer-insert.interface";
+import { ComputerMove } from "../models/computer-move.interface";
+import { MazePaths } from "../models/maze-paths.interface";
 
 describe('Class ComputerPlayer', () => {
 
@@ -14,95 +14,109 @@ describe('Class ComputerPlayer', () => {
     //Create a simple test maze. 3 x 3 with treasure in middle.
     //[!] Important: give the pieces a row and index number [!]
     let testMaze001: MazePiece[] = [
-        new MazePiece(0, 0, _images.getPiecesRed()[3], 3, 1, false,  0, false, -1, -1), //Player: 0 here.
-        new MazePiece(0, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-        new MazePiece(0, 2, _images.getPiecesRed()[3], 3, 2, false, -1, false, -1, -1),
+        //Player: 0 here.
+        { row: 0, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 1, isFixed:  false, player: 0, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 2, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-        new MazePiece(1, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-        new MazePiece(1, 1, _images.getPiecesRed()[0], 0, 1, false, -1, true,   0,  0, 'Treasure Here'),
-        new MazePiece(1, 2, _images.getPiecesRed()[2], 2, 2, false, -1, false, -1, -1),
+        { row: 1, column: 0, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  true, treasureForPlayer: 0, treasureImage: 'Treasure Here' }, 
+        { row: 1, column: 2, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-        new MazePiece(2, 0, _images.getPiecesRed()[3], 3, 0, false, -1, false, -1, -1),
-        new MazePiece(2, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-        new MazePiece(2, 2, _images.getPiecesRed()[3], 3, 3, false, -1, false, -1, -1)
+        { row: 2, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 2, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 3, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
     ];
 
     //Create a simple test maze. 3 x 3 -> the corners are normal positions. Straight pieces turned to the north.
     //[!] Important: give the pieces a row and index number [!]
     let testMaze002: MazePiece[] = [
-        new MazePiece(0, 0, _images.getPiecesRed()[3], 3, 1, false,  0, false, -1, -1), //Player: 0 here.
-        new MazePiece(0, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(0, 2, _images.getPiecesRed()[3], 3, 2, false, -1, false, -1, -1),
+        //Player: 0 here.
+        { row: 0, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 1, isFixed:  false, player: 0, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 2, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        
+        //No treasure in middle.
+        { row: 1, column: 0, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 2, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' },
 
-        new MazePiece(1, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-        new MazePiece(1, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1), //No treasure.
-        new MazePiece(1, 2, _images.getPiecesRed()[2], 2, 2, false, -1, false, -1, -1),
-
-        new MazePiece(2, 0, _images.getPiecesRed()[3], 3, 0, false, -1, false, -1, -1),
-        new MazePiece(2, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(2, 2, _images.getPiecesRed()[3], 3, 3, false, -1, false, -1, -1)
+        { row: 2, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 2, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 3, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
     ];
 
     //Create a simple test maze. 3 x 3 -> the corners are normal positions. Path to treasure is blocked. Treasure at bottom-right corner.
     //[!] Important: give the pieces a row and index number [!]
     let testMaze003: MazePiece[] = [
-        new MazePiece(0, 0, _images.getPiecesRed()[0], 0, 0, false,  0, false, -1, -1), //Player: 0 here.
-        new MazePiece(0, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1), //Alternative path here is blocked.
-        new MazePiece(0, 2, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
+        //Player: 0 here. Alternative path here is blocked in middle.
 
-        new MazePiece(1, 0, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(1, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(1, 2, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1), //Alternative path here is blocked.
+        { row: 0, column: 0, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: 0, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 2, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-        new MazePiece(2, 0, _images.getPiecesRed()[3], 3, 0, false, -1, false, -1, -1),
-        new MazePiece(2, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(2, 2, _images.getPiecesRed()[0], 0, 1, false, -1, true,   0,  0, 'Treasure Here') //straight piece, to east.
+        //Alternative path here is blocked for last piece.
+        { row: 1, column: 0, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 2, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+       
+        //Last piece: straight piece, to east.
+        { row: 2, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 2, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  true, treasureForPlayer: 0, treasureImage: 'Treasure Here' }, 
     ];
 
     //Create a simple test maze. 3 x 3 -> the corners are normal positions. Path to treasure is blocked. Treasure at bottom-right corner.
     //[!] Important: give the pieces a row and index number [!]
     let testMaze004: MazePiece[] = [
-        new MazePiece(0, 0, _images.getPiecesRed()[3], 3, 1, false, -1, false, -1, -1), //Player not at board.
-        new MazePiece(0, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(0, 2, _images.getPiecesRed()[3], 3, 2, false, -1, false, -1, -1),
-
-        new MazePiece(1, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-        new MazePiece(1, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(1, 2, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1), //Alternative path here is blocked.
-
-        new MazePiece(2, 0, _images.getPiecesRed()[3], 3, 0, false, -1, false, -1, -1),
-        new MazePiece(2, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(2, 2, _images.getPiecesRed()[0], 0, 1, false, -1, true,   0,  0, 'Treasure Here') //treasure at straight piece.
+        //Player not at board.
+        { row: 0, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 2, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        
+        //Last piece: Alternative path here is blocked.
+        { row: 1, column: 0, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 2, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        
+        //treasure at last (straight) piece.
+        { row: 2, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 2, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  true, treasureForPlayer: 0, treasureImage: 'Treasure Here' }, 
     ];
 
     //Create a simple test maze. 4 rows x 3 columns. For closest test.
     let testMaze005: MazePiece[] = [
-        new MazePiece(0, 0, _images.getPiecesRed()[3], 3, 1, false,  0, false, -1, -1), //Player: 0 here.
-        new MazePiece(0, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-        new MazePiece(0, 2, _images.getPiecesRed()[3], 3, 2, false, -1, false, -1, -1),
+        //Player: 0 here.
+        { row: 0, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 1, isFixed:  false, player: 0, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 0, column: 2, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-        new MazePiece(1, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-        new MazePiece(1, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-        new MazePiece(1, 2, _images.getPiecesRed()[2], 2, 2, false, -1, false, -1, -1),
+        { row: 1, column: 0, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 1, column: 2, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-        new MazePiece(2, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-        new MazePiece(2, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-        new MazePiece(2, 2, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1), //closest point
+         //Last piece: closest point
+        { row: 2, column: 0, pieceImage:  _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 2, column: 2, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-        new MazePiece(3, 0, _images.getPiecesRed()[3], 3, 0, false, -1, false, -1, -1),
-        new MazePiece(3, 1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1),
-        new MazePiece(3, 2, _images.getPiecesRed()[0], 0, 1, false, -1, true,   0,  0, 'Treasure Here')
+        //Last piece: treasure.
+        { row: 3, column: 0, pieceImage:  _images.getPiecesRed()[3], pieceNumber: 3, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 3, column: 1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+        { row: 3, column: 2, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  true, treasureForPlayer: 0, treasureImage: 'Treasure Here' }, 
     ];
 
     let testFixedRowAndColumnIndexes: number[] = [0, 1, 2];
 
-    let insertPiece: MazePiece = new MazePiece(-1, -1, _images.getPiecesRed()[1], 1, 0, false, -1, false, -1, -1);
+    let insertPiece: MazePiece = { row: -1, column: -1, pieceImage:  _images.getPiecesRed()[1], pieceNumber: 1, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' };
 
-    let insertPieceWithTreasure: MazePiece = new MazePiece(-1, -1, _images.getPiecesRed()[1], 1, 0, false, -1, true, 0, 0, 'Treasure Inserted Here');
+    let insertPieceWithTreasure: MazePiece = { row: -1, column: -1, pieceImage:  _images.getPiecesRed()[1], pieceNumber: 1, orientation: 0, isFixed:  false, player: -1, hasTreasure:  true, treasureForPlayer: 0, treasureImage: 'Treasure Inserted Here' };
 
-    let insertPieceStraight: MazePiece = new MazePiece(-1, -1, _images.getPiecesRed()[0], 0, 0, false, -1, false, -1, -1, 'Piece inserted here');
+    let insertPieceStraight: MazePiece = { row: -1, column: -1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: 'Piece inserted here' };
 
-    let insertPieceWithPlayer: MazePiece = new MazePiece(-1, -1, _images.getPiecesRed()[0], 0, 0, false, 0, false, -1, -1, 'Piece inserted here'); //player at straight piece.
+    //player at straight piece.
+    let insertPieceWithPlayer: MazePiece = { row: -1, column: -1, pieceImage:  _images.getPiecesRed()[0], pieceNumber: 0, orientation: 0, isFixed:  false, player: 0, hasTreasure:  false, treasureForPlayer: -1, treasureImage: 'Piece inserted here' }; 
 
     let targetPlayer: number = 0;
 
@@ -112,31 +126,31 @@ describe('Class ComputerPlayer', () => {
 
     //For private methods: test for maze: 5 x 5.
     let testPaths: MazePaths[] = [
-        new MazePaths(0, 0),
-        new MazePaths(0, 1),
-        new MazePaths(0, 2),
-        new MazePaths(0, 3),
-        new MazePaths(0, 4),
-        new MazePaths(1, 0),
-        new MazePaths(1, 1),
-        new MazePaths(1, 2),
-        new MazePaths(1, 3),
-        new MazePaths(1, 4),
-        new MazePaths(2, 0),
-        new MazePaths(2, 1),
-        new MazePaths(2, 2),
-        new MazePaths(2, 3),
-        new MazePaths(2, 4),
-        new MazePaths(3, 0),
-        new MazePaths(3, 1),
-        new MazePaths(3, 2),
-        new MazePaths(3, 3),
-        new MazePaths(3, 4),
-        new MazePaths(4, 0),
-        new MazePaths(4, 1),
-        new MazePaths(4, 2),
-        new MazePaths(4, 3),
-        new MazePaths(4, 4)
+        { row: 0, column: 0},
+        { row: 0, column: 1},
+        { row: 0, column: 2},
+        { row: 0, column: 3},
+        { row: 0, column: 4},
+        { row: 1, column: 0},
+        { row: 1, column: 1},
+        { row: 1, column: 2},
+        { row: 1, column: 3},
+        { row: 1, column: 4},
+        { row: 2, column: 0},
+        { row: 2, column: 1},
+        { row: 2, column: 2},
+        { row: 2, column: 3},
+        { row: 2, column: 4},
+        { row: 3, column: 0},
+        { row: 3, column: 1},
+        { row: 3, column: 2},
+        { row: 3, column: 3},
+        { row: 3, column: 4},
+        { row: 4, column: 0},
+        { row: 4, column: 1},
+        { row: 4, column: 2},
+        { row: 4, column: 3},
+        { row: 4, column: 4}
     ];
 
     it('test method computerInsertCalculation() testMaze001 - treasure in middle', () => {
@@ -226,11 +240,11 @@ describe('Class ComputerPlayer', () => {
 
     it('test private method: searchBestInsert()', () => {
         let allPaths: MazePaths[] = [
-            new MazePaths(1, 1, 8),
-            new MazePaths(2, 2, 2), //This is the best insert.
-            new MazePaths(3, 3, 5),
-            new MazePaths(4, 4, 4),
-            new MazePaths(5, 5, 3)
+            { row: 1, column: 1, total: 8},
+            { row: 2, column: 2, total: 2}, //This is the best insert.
+            { row: 3, column: 3, total: 5},
+            { row: 4, column: 4, total: 4},
+            { row: 5, column: 5, total: 3}
         ];
 
         //@ts-ignore
@@ -261,15 +275,15 @@ describe('Class ComputerPlayer', () => {
 
         //'Zig-zag' through maze.
         let paths: MazePaths[] = [
-            new MazePaths(0, 0),
-            new MazePaths(0, 1),
-            new MazePaths(0, 2),
-            new MazePaths(1, 2),
-            new MazePaths(1, 1),
-            new MazePaths(1, 0),
-            new MazePaths(2, 0),
-            new MazePaths(2, 1),
-            new MazePaths(2, 2)
+            { row: 0, column: 0},
+            { row: 0, column: 1},
+            { row: 0, column: 2},
+            { row: 1, column: 2},
+            { row: 1, column: 1},
+            { row: 1, column: 0},
+            { row: 2, column: 0},
+            { row: 2, column: 1},
+            { row: 2, column: 2}
         ];
 
         //@ts-ignore

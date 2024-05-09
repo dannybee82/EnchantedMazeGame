@@ -1,6 +1,6 @@
 import { Matrix } from "./Matrix";
-import { MazePaths } from "../models/MazePaths";
-import { MazePiece } from "../models/MazePiece";
+import { MazePaths } from "../models/maze-paths.interface";
+import { MazePiece } from "../models/maze-piece.interface";
 import { PieceImages } from "./PieceImages";
 
 describe('Class Matrix', () => {  
@@ -8,15 +8,15 @@ describe('Class Matrix', () => {
     let testClass: Matrix = new Matrix();
 
     let testPaths: MazePaths[] = [
-        new MazePaths(0, 0),
-        new MazePaths(0, 1),
-        new MazePaths(0, 2),
-        new MazePaths(0, 3),
-        new MazePaths(0, 4),
-        new MazePaths(1, 4),
-        new MazePaths(2, 4),
-        new MazePaths(3, 4),
-        new MazePaths(4, 4)
+        { row:0, column: 0},
+        { row:0, column: 1},
+        { row:0, column: 2},
+        { row:0, column: 3},
+        { row:0, column: 4},
+        { row:1, column: 4},
+        { row:2, column: 4},
+        { row:3, column: 4},
+        { row:4, column: 4}
     ];
 
     let _images: PieceImages = new PieceImages();
@@ -26,35 +26,36 @@ describe('Class Matrix', () => {
 
     function getMaze5x5() : MazePiece[] {
         let maze: MazePiece[] = [
-            new MazePiece(0, 0, _images.getPiecesRed()[3], 3, 1, false, playerNumber, false, -1, -1), //Player: 0 here.
-            new MazePiece(0, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(0, 2, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(0, 3, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(0, 4, _images.getPiecesRed()[3], 3, 2, false, -1, false, -1, -1),
+            //Player: 0 here.
+            { row: 0, column: 0, pieceImage: _images.getPiecesRed()[3], pieceNumber: 3, orientation: 1, isFixed:  false, player:  playerNumber, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 0, column: 1, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 0, column: 2, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 0, column: 3, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 0, column: 4, pieceImage: _images.getPiecesRed()[3], pieceNumber: 3, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-            new MazePiece(1, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-            new MazePiece(1, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(1, 2, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(1, 3, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(1, 4, _images.getPiecesRed()[2], 2, 2, false, -1, false, -1, -1),
+            { row: 1, column: 0, pieceImage: _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 1, column: 1, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 1, column: 2, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 1, column: 3, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 1, column: 4, pieceImage: _images.getPiecesRed()[2], pieceNumber: 2, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-            new MazePiece(2, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-            new MazePiece(2, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(2, 2, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(2, 3, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(2, 4, _images.getPiecesRed()[2], 2, 2, false, -1, false, -1, -1),
+            { row: 2, column: 0, pieceImage: _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 2, column: 1, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 2, column: 2, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 2, column: 3, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 2, column: 4, pieceImage: _images.getPiecesRed()[2], pieceNumber: 2, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-            new MazePiece(3, 0, _images.getPiecesRed()[2], 2, 0, false, -1, false, -1, -1),
-            new MazePiece(3, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(3, 2, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(3, 3, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(3, 4, _images.getPiecesRed()[2], 2, 2, false, -1, false, -1, -1),
+            { row: 3, column: 0, pieceImage: _images.getPiecesRed()[2], pieceNumber: 2, orientation: 0, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 3, column: 1, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 3, column: 2, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 3, column: 3, pieceImage: _images.getPiecesRed()[0], pieceNumber: 0, orientation: 1, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
+            { row: 3, column: 4, pieceImage: _images.getPiecesRed()[2], pieceNumber: 2, orientation: 2, isFixed:  false, player: -1, hasTreasure:  false, treasureForPlayer: -1, treasureImage: '' }, 
 
-            new MazePiece(4, 0, _images.getPiecesRed()[3], 3, 0, false, -1, false, -1, -1),
-            new MazePiece(4, 1, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(4, 2, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(4, 3, _images.getPiecesRed()[0], 0, 1, false, -1, false, -1, -1),
-            new MazePiece(4, 4, _images.getPiecesRed()[3], 3, 3, false, -1, true, 0, treasureIndex, 'Treasure Here')
+            { row: 4,column: 0,pieceImage: _images.getPiecesRed()[3],pieceNumber: 3,orientation: 0,isFixed:  false,player: -1,hasTreasure:  false,treasureForPlayer: -1,treasureImage: '' },
+            { row: 4,column: 1,pieceImage: _images.getPiecesRed()[0],pieceNumber: 0,orientation: 1,isFixed:  false,player: -1,hasTreasure:  false,treasureForPlayer: -1,treasureImage: '' },
+            { row: 4,column: 2,pieceImage: _images.getPiecesRed()[0],pieceNumber: 0,orientation: 1,isFixed:  false,player: -1,hasTreasure:  false,treasureForPlayer: -1,treasureImage: '' },
+            { row: 4,column: 3,pieceImage: _images.getPiecesRed()[0],pieceNumber: 0,orientation: 1,isFixed:  false,player: -1,hasTreasure:  false,treasureForPlayer: -1,treasureImage: '' },
+            { row: 4,column: 4,pieceImage: _images.getPiecesRed()[3],pieceNumber: 3,orientation: 3,isFixed:  false,player: -1,hasTreasure:  true,treasureForPlayer: 0,treasureImage: 'Treasure Here' },
         ];
 
         return maze;

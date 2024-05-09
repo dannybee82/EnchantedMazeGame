@@ -1,6 +1,6 @@
-import { RandomNumbers } from "../shared_methods/RandomNumbers";
-import { CommonArrayFunctions } from "../shared_methods/CommonArrayFunctions";
-import { MazePiece } from "../models/MazePiece";
+import { RandomNumbers } from "./RandomNumbers";
+import { CommonArrayFunctions } from "./CommonArrayFunctions";
+import { MazePiece } from "../models/maze-piece.interface";
 
 export class Misc {
 

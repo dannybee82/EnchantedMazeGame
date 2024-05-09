@@ -1,5 +1,5 @@
-import { MazePiece } from "../models/MazePiece";
-import { MazePaths } from "../models/MazePaths";
+import { MazePiece } from "../models/maze-piece.interface";
+import { MazePaths } from "../models/maze-paths.interface";
 import { PieceImages } from "./PieceImages";
 import { Matrix } from "./Matrix";
 
@@ -16,7 +16,11 @@ export class SearchMazePath extends Matrix {
         let playerPosition: number = this.findIndexOfPlayer(pieces, player);
 
         if (playerPosition > -1) {
-            this._paths.push(new MazePaths(pieces[playerPosition].row, pieces[playerPosition].column));
+            const mazePath: MazePaths = {
+                row: pieces[playerPosition].row,
+                column: pieces[playerPosition].column
+            };
+            this._paths.push(mazePath);
 
             this.getPaths(playerPosition, pieces);
             let isChanged: boolean = true;
@@ -327,7 +331,11 @@ export class SearchMazePath extends Matrix {
         let index: number = this._paths.findIndex(item => item.row == row && item.column == column);
 
         if (index == -1) {
-            this._paths.push(new MazePaths(row, column));
+            const mazePath: MazePaths = {
+                row: row,
+                column: column
+            };
+            this._paths.push(mazePath);
         }
     }
 

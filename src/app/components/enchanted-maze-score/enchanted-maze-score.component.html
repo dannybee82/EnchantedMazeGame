@@ -1,0 +1,36 @@
+@if(this.currentScore !== undefined) {
+    @if(!this.currentScore.isGameEnded) {
+        @for(score of this.currentScore.scores; track score; let player = $index) {
+            <div class="row p-2 border border-1 border-dark rounded mb-1">
+                <div class="col-2">
+                    <div class="col-auto p-0 player" 
+                        [class.player-one]="player == 0" 
+                        [class.player-two]="player == 1"
+                        [class.player-three]="player == 2" 
+                        [class.player-four]="player == 3"></div>
+                  </div>
+                  <div class="col-2 p-0 mt-2">
+                    {{ score }}
+                  </div>
+                  <div class="col-2">
+                    <img [src]="this.getTreasureForPlayer(player)" alt="Treasure" [title]="'Treasure for player: ' + (player + 1)">
+                  </div>
+            </div>
+        }
+    } @else {
+        <div class="row mt-2">
+            <div class="col-auto p-2 rounded text-light bg-success mb-1">
+              Game ended. Highest score: {{ this.getHighestScore() }}
+            </div>
+            <div class="col-auto mt-1">
+              {{ (this.getWinningPlayers().length > 1) ? 'Winning players:' : 'Winning player:' }}
+            </div>
+            @for (winner of this.getWinningPlayers(); track winner) {
+              <div class="col-auto">
+                <div class="col-auto player player-turn p-0 m-0 ms-2" [class.player-one]="winner == 0" [class.player-two]="winner == 1"
+                [class.player-three]="winner == 2" [class.player-four]="winner == 3"></div>
+              </div>
+            }
+        </div>
+    }
+}

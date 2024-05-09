@@ -1,123 +1,127 @@
-<div class="container-fluid">
-  <div class="row">
-    New Game
-  </div>
-  <div class="row p-0">
-    <div class="col-1 m-0">
-      Players:
-    </div>
-    <div class="col-1 m-0 mt-1 mb-2">
-      {{ this.amountOfPlayers }}
-    </div>
-    <div class="col-auto m-0">
-      <button class="btn bg-danger p-1 text-light" title="Decrease" (click)="this.changePlayerAmount(false)" [disabled]="this.amountOfPlayers == 1">
-        <i class="bi bi-dash-lg"></i>
-      </button>
-    </div>
-    <div class="col-auto m-0">
-      <button class="btn bg-success p-1 text-light" title="Increase" (click)="this.changePlayerAmount(true)" [disabled]="this.amountOfPlayers == 4">
-        <i class="bi bi-plus-lg"></i>
-      </button>
-    </div>
-  </div>
-  <div class="row p-0 mb-4">
-    <div class="col-1 m-0">
-      Treasures:
-    </div>
-    <div class="col-1 m-0 mt-1">
-      {{ this.amountOfTreasures }}
-    </div>
-    <div class="col-auto m-0">
-      <button class="btn bg-danger p-1 text-light" title="Decrease" (click)="this.chageTreasureAmount(false)" [disabled]="this.amountOfTreasures == 1">
-        <i class="bi bi-dash-lg"></i>
-      </button>
-    </div>
-    <div class="col-auto m-0">
-      <button class="btn bg-success p-1 text-light" title="Increase" (click)="this.chageTreasureAmount(true)" [disabled]="this.amountOfTreasures == this.maxAmountOfTreasures">
-        <i class="bi bi-plus-lg"></i>
-      </button>
-    </div>
-  </div>
-  <div class="row mt-4 mb-4">
-    <div class="col-2">
-      Maze difficulty:
-    </div>
-    <div class="col-auto">
-      <button class="btn text-light bg-success p-2 button-difficulty" [disabled]="this.difficulty == 1" (click)="this.setDifficulty(1)" title="Easy">
-        <i class="bi bi-1-circle-fill"></i>
-      </button>
-    </div>
-    <div class="col-auto">
-      <button class="btn text-light bg-warning p-2 button-difficulty" [disabled]="this.difficulty == 2" (click)="this.setDifficulty(2)" title="Normal">
-        <i class="bi bi-2-circle-fill"></i>
-      </button>
-    </div>
-    <div class="col-auto">
-      <button class="btn text-light bg-danger p-2 button-difficulty" [disabled]="this.difficulty == 3" (click)="this.setDifficulty(3)" title="Hard">
-        <i class="bi bi-3-circle-fill"></i>
-      </button>
-    </div>
-    <div class="col-auto pt-2 button-difficulty">
-      @if (this.difficulty == 1) {
-        <span class="text-success">Easy</span>
-      }
-      @if (this.difficulty == 2) {
-        <span class="text-warning">Normal</span>
-      }
-      @if (this.difficulty == 3) {
-        <span class="text-danger">Hard</span>
-      }
-    </div>
-  </div>
-  @for (player of this.humanOrCpu; track player; let index = $index) {
-    <div class="row p-0 mb-2">
-      <div class="col-2">Player: {{ index + 1 }}</div>
-      <div class="col-2 player" [class.player-one]="index == 0" [class.player-two]="index == 1" [class.player-three]="index == 2"
-      [class.player-four]="index == 3"></div>
-      <div class="col-auto">
-        <button class="btn p-2 text-light bg-success" [disabled]="player" (click)="changePlayer(index, true)">
-          <i class="bi bi-person-square"></i>
-        </button>
-      </div>
-      <div class="col-auto">
-        <button class="btn p-2 text-light bg-danger" [disabled]="!player" (click)="changePlayer(index, false)">
-          <i class="bi bi-laptop-fill"></i>
-        </button>
-      </div>
-      <div class="col-2 pt-2">
-        @if (player) {
-          <span class="text-success">Human</span>
+@if(showComponent()) {
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-auto">
+                <strong>New Game</strong>
+            </div>
+        </div>
+        <div class="row p-0">
+        <div class="col-1 m-0">
+            Players:
+        </div>
+        <div class="col-1 m-0 mt-1 mb-2">
+            {{ gameSettings.amountOfPlayers }}
+        </div>
+        <div class="col-auto m-0">
+            <button class="btn bg-danger p-1 text-light" title="Decrease" (click)="changePlayerAmount(false)" [disabled]="gameSettings.amountOfPlayers == 1">
+            <i class="bi bi-dash-lg"></i>
+            </button>
+        </div>
+        <div class="col-auto m-0">
+            <button class="btn bg-success p-1 text-light" title="Increase" (click)="changePlayerAmount(true)" [disabled]="gameSettings.amountOfPlayers == 4">
+            <i class="bi bi-plus-lg"></i>
+            </button>
+        </div>
+        </div>
+        <div class="row p-0 mb-4">
+        <div class="col-1 m-0">
+            Treasures:
+        </div>
+        <div class="col-1 m-0 mt-1">
+            {{ gameSettings.amountOfTreasures }}
+        </div>
+        <div class="col-auto m-0">
+            <button class="btn bg-danger p-1 text-light" title="Decrease" (click)="changeTreasureAmount(false)" [disabled]="gameSettings.amountOfTreasures == 1">
+            <i class="bi bi-dash-lg"></i>
+            </button>
+        </div>
+        <div class="col-auto m-0">
+            <button class="btn bg-success p-1 text-light" title="Increase" (click)="changeTreasureAmount(true)" [disabled]="gameSettings.amountOfTreasures == gameSettings.maxAmountOfTreasures">
+            <i class="bi bi-plus-lg"></i>
+            </button>
+        </div>
+        </div>
+        <div class="row mt-4 mb-4">
+        <div class="col-2">
+            Maze difficulty:
+        </div>
+        <div class="col-auto">
+            <button class="btn text-light bg-success p-2 button-difficulty" [disabled]="gameSettings.difficulty == 1" (click)="this.setDifficulty(1)" title="Easy">
+            <i class="bi bi-1-circle-fill"></i>
+            </button>
+        </div>
+        <div class="col-auto">
+            <button class="btn text-light bg-warning p-2 button-difficulty" [disabled]="gameSettings.difficulty == 2" (click)="this.setDifficulty(2)" title="Normal">
+            <i class="bi bi-2-circle-fill"></i>
+            </button>
+        </div>
+        <div class="col-auto">
+            <button class="btn text-light bg-danger p-2 button-difficulty" [disabled]="gameSettings.difficulty == 3" (click)="this.setDifficulty(3)" title="Hard">
+            <i class="bi bi-3-circle-fill"></i>
+            </button>
+        </div>
+        <div class="col-auto pt-2 button-difficulty">
+            @if (gameSettings.difficulty == 1) {
+            <span class="text-success">Easy</span>
+            }
+            @if (gameSettings.difficulty == 2) {
+            <span class="text-warning">Normal</span>
+            }
+            @if (gameSettings.difficulty == 3) {
+            <span class="text-danger">Hard</span>
+            }
+        </div>
+        </div>
+        @for (player of gameSettings.humanOrCpu; track player; let index = $index) {
+        <div class="row p-0 mb-2">
+            <div class="col-2">Player: {{ index + 1 }}</div>
+            <div class="col-2 player" [class.player-one]="index == 0" [class.player-two]="index == 1" [class.player-three]="index == 2"
+            [class.player-four]="index == 3"></div>
+            <div class="col-auto">
+            <button class="btn p-2 text-light bg-success" [disabled]="player" (click)="changePlayer(index, true)">
+                <i class="bi bi-person-square"></i>
+            </button>
+            </div>
+            <div class="col-auto">
+            <button class="btn p-2 text-light bg-danger" [disabled]="!player" (click)="changePlayer(index, false)">
+                <i class="bi bi-laptop-fill"></i>
+            </button>
+            </div>
+            <div class="col-2 pt-2">
+            @if (player) {
+                <span class="text-success">Human</span>
+            }
+            @if (!player) {
+                <span class="text-danger">Computer</span>
+            }
+            </div>
+        </div>
         }
-        @if (!player) {
-          <span class="text-danger">Computer</span>
-        }
-      </div>
+        <div class="row p-0 mb-4">
+        <div class="col-auto">
+            <button class="btn" [class.text-light]="!gameSettings.randomStartPositions" [class.bg-primary]="!gameSettings.randomStartPositions" [class.bg-warning]="gameSettings.randomStartPositions" [class.text-dark]="gameSettings.randomStartPositions" title="Start Positions" (click)="this.changeStartPositions()" >
+            @if (!gameSettings.randomStartPositions) {
+                <i class="bi bi-toggle-off" ></i>
+            }
+            @if (gameSettings.randomStartPositions) {
+                <i class="bi bi-toggle-on" ></i>
+            }
+            @if (!gameSettings.randomStartPositions) {
+                <span class="ms-2">Default start positions</span>
+            }
+            @if (gameSettings.randomStartPositions) {
+                <span class="ms-2">Random start positions</span>
+            }
+            </button>
+        </div>
+        </div>
+        <div class="row mt-2">
+        <div class="col-auto">
+            <button class="btn bg-success text-light p-2" title="Start New Game" (click)="this.startNewGame()">
+            <i class="bi bi-check-lg"></i>
+            <span class="ms-2">Start New Game</span>
+            </button>
+        </div>
+        </div>
     </div>
-  }
-  <div class="row p-0 mb-4">
-    <div class="col-auto">
-      <button class="btn" [class.text-light]="!this.randomStartPositions" [class.bg-primary]="!this.randomStartPositions" [class.bg-warning]="this.randomStartPositions" [class.text-dark]="this.randomStartPositions" title="Start Positions" (click)="this.changeStartPositions()" >
-        @if (!this.randomStartPositions) {
-          <i class="bi bi-toggle-off" ></i>
-        }
-        @if (this.randomStartPositions) {
-          <i class="bi bi-toggle-on" ></i>
-        }
-        @if (!this.randomStartPositions) {
-          <span class="ms-2">Default start positions</span>
-        }
-        @if (this.randomStartPositions) {
-          <span class="ms-2">Random start positions</span>
-        }
-      </button>
-    </div>
-  </div>
-  <div class="row mt-2">
-    <div class="col-auto">
-      <button class="btn bg-success text-light p-2" title="Start New Game" (click)="this.startNewGame()">
-        <i class="bi bi-check-lg"></i>
-        <span class="ms-2">Start New Game</span>
-      </button>
-    </div>
-  </div>
-</div>
+}

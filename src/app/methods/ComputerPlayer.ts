@@ -1,8 +1,8 @@
 import { Controls } from "./Controls";
-import { MazePiece } from "../models/MazePiece";
-import { MazePaths } from "../models/MazePaths";
-import { ComputerInsert } from "../models/ComputerInsert";
-import { ComputerMove } from "../models/ComputerMove";
+import { MazePiece } from "../models/maze-piece.interface";
+import { MazePaths } from "../models/maze-paths.interface";
+import { ComputerInsert } from "../models/computer-insert.interface";
+import { ComputerMove } from "../models/computer-move.interface";
 
 export class ComputerPlayer extends Controls {
 
@@ -196,7 +196,13 @@ export class ComputerPlayer extends Controls {
             }            
         }
 
-        return new ComputerInsert(isInsertAxisY, target, orientation, isTopOrLeft);
+        const computerInsert: ComputerInsert = {
+            insertAxisY: isInsertAxisY,
+            rowOrColumnIndex: target,
+            orientation: orientation,
+            isTopOrLeft: isTopOrLeft
+        };
+        return computerInsert;
     }
 
     computerMoveCalculation(pieces: MazePiece[], currentPiece: MazePiece, computerPlayer: number) : ComputerMove {
@@ -239,7 +245,12 @@ export class ComputerPlayer extends Controls {
             }
         }
 
-        return new ComputerMove(canMove, row, column);
+        const computerMove: ComputerMove = {
+            canMove: canMove,
+            row: row,
+            column: column
+        }
+        return computerMove;
     }
      
     private calculateDistances(possiblePaths: MazePaths[], treasureRow: number, treasureColumn: number) : number[] {

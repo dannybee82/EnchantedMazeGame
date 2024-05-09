@@ -1,0 +1,71 @@
+@if(this.showBoard()) {
+    <!-- Border top here. -->
+    <div class="row m-0 p-0">
+        <div class="col-auto maze-border-top-and-bottom maze-border-side maze-border"></div>
+        @for (column of this.columns; track column) {
+        <div class="col-auto m-0 p-0 maze-border maze-border-top-and-bottom maze-border-x-axis">
+            @if (column % 2 == 1) {
+            <button 
+              class="rounded border border-1 border-light w-100 chevron-hover mt-1 mb-1"
+              [class.has-hint]="this.showHint.side === 0 && this.showHint.index === column" 
+              (click)="this.insertPieceAxis(true, true, column)"
+              [disabled]="this.isInsertDisabled()">
+                <i class="bi bi-chevron-double-down w-100"></i>
+            </button>
+            }
+        </div>
+        }
+        <div class="col-auto maze-border maze-border-top-and-bottom maze-border-side"></div>
+    </div>
+    <!-- Fill Rows -->
+    @for (row of this.rows; track row) {
+        <div class="row m-0 p-0 g-0">
+          <div class="col-auto maze-border maze-border-side maze-border-y-axis m-0 p-0">
+            @if (row % 2 == 1) {
+              <button 
+                class="rounded border border-1 border-light h-100 chevron-hover ms-1 me-1" 
+                [class.has-hint]="this.showHint.side === 1 && this.showHint.index === row" 
+                (click)="this.insertPieceAxis(false, true, row)" 
+                [disabled]="this.isInsertDisabled()">
+                  <i class="bi bi-chevron-double-right h-100"></i>
+              </button>
+            }
+          </div>
+        <!-- Fill columns -->
+        @for (column of this.columns; track column) {
+            <app-enchanted-maze-piece style="width: auto; height: auto;" [mazePiece]="this.getPiece(row, column)" (movePlayer)="this.movePlayer($event)"></app-enchanted-maze-piece>
+        }
+        <div class="col-auto maze-border maze-border-side maze-border-y-axis m-0 p-0">
+            @if (row % 2 == 1) {
+            <button 
+              class="rounded border border-1 border-light h-100 chevron-hover ms-1 me-1" 
+              [class.has-hint]="this.showHint.side === 2 && this.showHint.index === row" 
+              (click)="this.insertPieceAxis(false, false, row)" 
+              [disabled]="this.isInsertDisabled()">
+                <i class="bi bi-chevron-double-left h-100"></i>
+            </button>
+            }
+        </div>
+      </div>
+    }
+    <!-- Border bottom here -->
+    <div class="row m-0 p-0">
+        <div class="col-auto maze-border maze-border-top-and-bottom maze-border-side"></div>
+        @for (column of this.columns; track column) {
+          <div class="col-auto m-0 p-0 maze-border maze-border-top-and-bottom maze-border-x-axis">
+            <div class="col-auto maze-border maze-border-x-axis">
+              @if (column % 2 == 1) {
+                <button 
+                  class="rounded border border-1 border-light w-100 chevron-hover mt-1 mb-1" 
+                  [class.has-hint]="this.showHint.side === 3 && this.showHint.index === column"
+                  (click)="this.insertPieceAxis(true, false, column)" 
+                  [disabled]="this.isInsertDisabled()">
+                    <i class="bi bi-chevron-double-up w-100"></i>
+                </button>
+              }
+            </div>
+          </div>
+        }
+        <div class="col-auto maze-border maze-border-top-and-bottom maze-border-side"></div>
+      </div>   
+}

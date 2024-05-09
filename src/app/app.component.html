@@ -1,8 +1,5 @@
-<div class="container-fluid">
-  @if (!this.isGameStarted) {
+@if(!this.isGameStarted()) {
     <app-start-new-game></app-start-new-game>
-  }
-  @if (this.isGameStarted) {
-    <app-enchanted-maze></app-enchanted-maze>
-  }
-</div>
+} @else {
+    <app-enchanted-maze-main></app-enchanted-maze-main>
+}

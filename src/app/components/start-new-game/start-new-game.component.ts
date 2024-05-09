@@ -1,86 +1,86 @@
-import { Component } from '@angular/core';
-
-import { GameSettingsService } from 'src/app/services/game-settings.service';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import { GameSettingsService } from '../../services/game-settings.service';
+import { GameSettings } from '../../models/game-settings.interface';
 
 @Component({
   selector: 'app-start-new-game',
+  standalone: true,
+  imports: [],
   templateUrl: './start-new-game.component.html',
-  styleUrls: ['./start-new-game.component.css']
+  styleUrl: './start-new-game.component.scss'
 })
-export class StartNewGameComponent {
+export class StartNewGameComponent implements OnInit {
 
-  public amountOfPlayers: number = 1;
+  showComponent: WritableSignal<boolean> = signal(false);
 
-  public amountOfTreasures: number = 3;
+  gameSettings: GameSettings = {
+    gameStarted: false,
+    amountOfPlayers: 1,
+    amountOfTreasures: 3,
+    maxAmountOfTreasures: 51,
+    humanOrCpu: [true],
+    randomStartPositions: false,
+    difficulty: 1
+  };
 
-  public maxAmountOfTreasures: number = -1;
+  private gameSettingsService = inject(GameSettingsService);
 
-  public humanOrCpu: boolean[] = [];
-
-  public difficulty: number = 1;
-
-  public randomStartPositions: boolean = false;
-
-  constructor(private gameSettingsService: GameSettingsService) {}
-
-  ngOnInit() {
-    this.maxAmountOfTreasures = this.gameSettingsService.getMaximumAmountOfTreasures();
-    this.setPlayersArray();
+  ngOnInit(): void {
+    this.gameSettings = this.gameSettingsService.gameSettings$.getValue();
+    this.showComponent.set(true);
   }
 
-  changePlayerAmount(isPlus: boolean) : void {
-    if(isPlus) {
-      this.amountOfPlayers = (this.amountOfPlayers + 1 > 4) ? 4 : this.amountOfPlayers += 1;
+  changePlayerAmount(addPlayer: boolean): void {
+    if(addPlayer) {
+      this.gameSettings.amountOfPlayers = (this.gameSettings.amountOfPlayers + 1 > 4) ? 4 : this.gameSettings.amountOfPlayers += 1;
     } else {
-      this.amountOfPlayers = (this.amountOfPlayers - 1 < 1) ? 1 : this.amountOfPlayers -= 1;
+      this.gameSettings.amountOfPlayers = (this.gameSettings.amountOfPlayers - 1 < 1) ? 1 : this.gameSettings.amountOfPlayers -= 1;
     }
 
-    if(this.amountOfPlayers >= (this.amountOfTreasures / 2)) {
-      this.amountOfTreasures = this.amountOfPlayers * 2;
+    if(this.gameSettings.amountOfPlayers >= (this.gameSettings.amountOfTreasures / 2)) {
+      this.gameSettings.amountOfTreasures = this.gameSettings.amountOfPlayers * 2;
     }
 
-    this.setPlayersArray();
+    this.setPlayers();
   }
 
-  chageTreasureAmount(isPlus: boolean) : void {
-    if(isPlus) {
-      this.amountOfTreasures = (this.amountOfTreasures + 1 > this.maxAmountOfTreasures) ? this.maxAmountOfTreasures : this.amountOfTreasures += 1;
+  changeTreasureAmount(addTreasure: boolean): void {
+    if(addTreasure) {
+      this.gameSettings.amountOfTreasures = (this.gameSettings.amountOfTreasures + 1) > (this.gameSettings.maxAmountOfTreasures) ? this.gameSettings.maxAmountOfTreasures : this.gameSettings.amountOfTreasures += 1;
     } else {
-      this.amountOfTreasures = (this.amountOfTreasures - 1 < 1) ? 1 : this.amountOfTreasures -= 1;
+      this.gameSettings.amountOfTreasures = (this.gameSettings.amountOfTreasures - 1 < 1) ? 1 : this.gameSettings.amountOfTreasures -= 1;
     }
-  }  
-
-  changePlayer(index: number, isHuman: boolean) : void {
-    this.humanOrCpu[index] = isHuman;
   }
 
   setDifficulty(value: number) : void {
-    this.difficulty = value;
+    this.gameSettings.difficulty = value;
   }
 
-  changeStartPositions() : void {
-    this.randomStartPositions = !this.randomStartPositions;
+  changePlayer(index: number, isHuman: boolean): void {
+    let humarOrCpu: boolean[] = this.gameSettings.humanOrCpu;
+    humarOrCpu[index] = isHuman;
+    this.gameSettings.humanOrCpu = humarOrCpu;
   }
 
-  startNewGame() : void {
-    this.gameSettingsService.setAmountOfPlayers(this.amountOfPlayers);
-    this.gameSettingsService.setAmountOfTreasures(this.amountOfTreasures);
-    this.gameSettingsService.setHumanOrCpu(this.humanOrCpu);
-    this.gameSettingsService.setDifficulty(this.difficulty);
-    this.gameSettingsService.setRandomStartLocations(this.randomStartPositions);
-    
-    this.gameSettingsService.setStartGame(true);
+  changeStartPositions(): void {
+    this.gameSettings.randomStartPositions = !this.gameSettings.randomStartPositions;
   }
-  
-  private setPlayersArray() : void {
-    this.humanOrCpu = new Array(this.amountOfPlayers);
-    this.humanOrCpu[0] = true;
 
-    if(this.humanOrCpu.length > 1) {
-      for(let i = 1; i < this.humanOrCpu.length; i++) {
-        this.humanOrCpu[i] = false;
-      }
+  startNewGame(): void {
+    this.gameSettings.gameStarted = true;
+    this.gameSettingsService.setGameSettings(this.gameSettings);
+  }
+
+  private setPlayers(): void {
+    let humarOrCpu: boolean[] = this.gameSettings.humanOrCpu;
+
+    if(this.gameSettings.amountOfPlayers > humarOrCpu.length) {
+      humarOrCpu = [...humarOrCpu, false];
+    } else {      
+      humarOrCpu = humarOrCpu.slice(0, humarOrCpu.length - 1);
     }
+
+    this.gameSettings.humanOrCpu = humarOrCpu;
   }
 
 }

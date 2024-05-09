@@ -1,5 +1,5 @@
-import { MazePaths } from "../models/MazePaths";
-import { MazePiece } from "../models/MazePiece";
+import { MazePaths } from "../models/maze-paths.interface";
+import { MazePiece } from "../models/maze-piece.interface";
 import { PiecesEntryPoints } from "./PiecesEntryPoints";
 
 export class Matrix extends PiecesEntryPoints {

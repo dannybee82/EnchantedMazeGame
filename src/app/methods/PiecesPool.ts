@@ -1,7 +1,7 @@
 import { PieceImages } from "./PieceImages";
-import { MazePiece } from "../models/MazePiece";
-import { RandomNumbers } from "../shared_methods/RandomNumbers";
-import { CommonArrayFunctions } from "../shared_methods/CommonArrayFunctions";
+import { MazePiece } from "../models/maze-piece.interface";
+import { RandomNumbers } from "./RandomNumbers";
+import { CommonArrayFunctions } from "./CommonArrayFunctions";
 
 export class PiecesPool {
 
@@ -27,7 +27,19 @@ export class PiecesPool {
 
             for(let j = 0; j < amount; j++) {
                 let orientation: number = randomNumbers.generateRandomNumber(0, 4);
-                this._pool.push(new MazePiece(-1, -1, this._images.getPiecesRed()[i], i, orientation, false, -1, false, -1, -1));
+                const mazePiece: MazePiece = {
+                    row: -1,
+                    column: -1,
+                    pieceImage: this._images.getPiecesRed()[i],
+                    pieceNumber: i, 
+                    orientation: orientation,
+                    isFixed: false,
+                    player: -1,
+                    hasTreasure: false,
+                    treasureForPlayer: -1,
+                    treasureImage: ''
+                };
+                this._pool.push(mazePiece);
             }
         }
 

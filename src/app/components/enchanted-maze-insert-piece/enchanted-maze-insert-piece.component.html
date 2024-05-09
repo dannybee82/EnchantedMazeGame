@@ -1,0 +1,17 @@
+@if(this.currentPiece !== undefined) {
+    <div class="row mb-1">
+        <app-enchanted-maze-piece [mazePiece]="this.currentPiece"></app-enchanted-maze-piece>
+    </div>
+    <div class="row mt-2 mb-1">
+        <div class="col-auto">
+        <button class="btn text-dark bg-warning" title="Rotate Clockwise" (click)="this.rotateCurrentPiece(true)" [disabled]="this.insertPiece">
+            <i class="bi bi-arrow-clockwise"></i>
+        </button>
+        </div>
+        <div class="col-auto">
+        <button class="btn text-dark bg-warning" title="Rotate Counterclockwise" (click)="this.rotateCurrentPiece(false)" [disabled]="this.insertPiece">
+            <i class="bi bi-arrow-counterclockwise"></i>
+        </button>
+        </div>
+    </div>
+}

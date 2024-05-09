@@ -1,0 +1,23 @@
+@if(this.currentTurn !== undefined) {
+    <div class="row mb-1">
+        <div class="col-2">
+          Turn: {{ this.currentTurn.totalTurns }}
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-3"><strong>Players turn:</strong></div>
+        <div class="col-2">
+            <div class="col-auto p-0 player" 
+                [class.player-one]="this.currentTurn.currentPlayerTurn == 0" 
+                [class.player-two]="this.currentTurn.currentPlayerTurn == 1"
+                [class.player-three]="this.currentTurn.currentPlayerTurn == 2" 
+                [class.player-four]="this.currentTurn.currentPlayerTurn == 3"></div>
+        </div>
+        <div class="col-2"><strong>Treasure:</strong></div>
+        <div class="col-2 p-2">
+            @if(this.treasureImage !== '') {
+                <img [src]="this.treasureImage" />
+            }
+        </div>
+    </div>
+}
