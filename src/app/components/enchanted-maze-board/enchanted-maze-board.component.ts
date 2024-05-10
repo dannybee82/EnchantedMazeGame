@@ -70,11 +70,7 @@ export class EnchantedMazeBoardComponent extends ComputerPlayer implements OnIni
       const humanOrComputer: boolean[] = data.humanOrComputer;
       const isPieceInserted = this.insertPieceService.isPieceInserted$.getValue();
 
-      if(isPieceInserted || !humanOrComputer[currentPlayer]) {
-        this.isInsertDisabled.set(true);
-      } else {
-        this.isInsertDisabled.set(false);
-      }
+      this.isInsertDisabled.set((isPieceInserted || !humanOrComputer[currentPlayer]) ? true : false);
 
       if(!humanOrComputer[currentPlayer]) {
         this.currentTurnForHumanOrComputer(currentPlayer);
@@ -152,11 +148,10 @@ export class EnchantedMazeBoardComponent extends ComputerPlayer implements OnIni
       insertPiece.orientation = cpuInsert.orientation;
     }
 
-    if(!cpuInsert.insertAxisY) {
-      this.insertCpuAxis(false, cpuInsert.isTopOrLeft, cpuInsert.rowOrColumnIndex);  
-    } else {
-      this.insertCpuAxis(true, cpuInsert.isTopOrLeft, cpuInsert.rowOrColumnIndex);
-    }
+    this.insertCpuAxis(!cpuInsert.insertAxisY ? false : false, 
+      cpuInsert.isTopOrLeft, 
+      cpuInsert.rowOrColumnIndex
+    );
   }
 
   private insertCpuAxis(isInsertAxisY: boolean, fromTop: boolean, rowOrcolumn: number) : void {
@@ -246,8 +241,7 @@ export class EnchantedMazeBoardComponent extends ComputerPlayer implements OnIni
                   this.animatePositions(positions, turn.currentPlayerTurn);      
                   this.clearPreviousRoutes(positions);              
                 } else {
-                  this.checkTreasure(indexPlayer, destination); 
-                  
+                  this.checkTreasure(indexPlayer, destination);                   
                   subscription.unsubscribe();                          
                 }                              
               },
@@ -261,7 +255,7 @@ export class EnchantedMazeBoardComponent extends ComputerPlayer implements OnIni
         }
       }
     } else {
-      alert('Insert piece first');
+      //alert('Insert piece first');
     }    
   }
 
