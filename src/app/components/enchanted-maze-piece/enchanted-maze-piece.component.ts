@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, InputSignal, input, OutputEmitterRef, output, inject } from '@angular/core';
 import { MazePiece } from '../../models/maze-piece.interface';
 import { PieceInserted } from '../../methods/Animations';
 import { LastInsertedPositionService } from '../../services/last-inserted-position.service';
@@ -15,8 +15,8 @@ import { Position } from '../../models/position.interface';
 })
 export class EnchantedMazePieceComponent {
 
-  @Input() mazePiece?: MazePiece;  
-  @Output() movePlayer: EventEmitter<Position> = new EventEmitter<Position>();
+  mazePiece: InputSignal<MazePiece> = input.required<MazePiece>({});
+  movePlayer: OutputEmitterRef<Position> = output<Position>();
 
   private lastInsertedPosition = inject(LastInsertedPositionService);
 

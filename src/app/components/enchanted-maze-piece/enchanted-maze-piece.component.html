@@ -1,28 +1,28 @@
 @if(this.mazePiece != undefined) {
-    <div class="col-auto m-0 p-0 single-maze" [@PieceInserted]="this.isPieceAffectedByInsert(this.mazePiece.row, this.mazePiece.column)">
+    <div class="col-auto m-0 p-0 single-maze" [@PieceInserted]="this.isPieceAffectedByInsert(this.mazePiece().row, this.mazePiece().column)">
         <div>
             <img 
-                [src]="this.mazePiece.pieceImage" 
-                [class.orientation-north]="this.mazePiece.orientation == 0"
-                [class.orientation-east]="this.mazePiece.orientation == 1" 
-                [class.orientation-south]="this.mazePiece.orientation == 2"
-                [class.orientation-west]="this.mazePiece.orientation == 3"
-                (click)="this.move(this.mazePiece.row, this.mazePiece.column)">
+                [src]="this.mazePiece().pieceImage" 
+                [class.orientation-north]="this.mazePiece().orientation == 0"
+                [class.orientation-east]="this.mazePiece().orientation == 1" 
+                [class.orientation-south]="this.mazePiece().orientation == 2"
+                [class.orientation-west]="this.mazePiece().orientation == 3"
+                (click)="this.move(this.mazePiece().row, this.mazePiece().column)">
         </div>
-        @if(this.mazePiece.player > -1) {
+        @if(this.mazePiece().player > -1) {
             <div 
                 class="col-auto player-at-piece player" 
-                [class.player-one]="this.mazePiece.player == 0" 
-                [class.player-two]="this.mazePiece.player == 1"
-                [class.player-three]="this.mazePiece.player == 2" 
-                [class.player-four]="this.mazePiece.player == 3"
-                (click)="this.move(this.mazePiece.row, this.mazePiece.column)">
+                [class.player-one]="this.mazePiece().player == 0" 
+                [class.player-two]="this.mazePiece().player == 1"
+                [class.player-three]="this.mazePiece().player == 2" 
+                [class.player-four]="this.mazePiece().player == 3"
+                (click)="this.move(this.mazePiece().row, this.mazePiece().column)">
                 &#x2022;
             </div>
         }
-        @if(this.mazePiece.hasTreasure) {
+        @if(this.mazePiece().hasTreasure) {
             <div class="col-auto treasure-at-location">
-                <img [src]="this.mazePiece.treasureImage" (click)="this.move(this.mazePiece.row, this.mazePiece.column)" />
+                <img [src]="this.mazePiece().treasureImage" (click)="this.move(this.mazePiece().row, this.mazePiece().column)" />
             </div>
         }
     </div>

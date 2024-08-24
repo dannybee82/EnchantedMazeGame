@@ -2,7 +2,7 @@
     <!-- Border top here. -->
     <div class="row m-0 p-0">
         <div class="col-auto maze-border-top-and-bottom maze-border-side maze-border"></div>
-        @for (column of this.columns; track column) {
+        @for (column of this.columns; track column; let index = $index) {
         <div class="col-auto m-0 p-0 maze-border maze-border-top-and-bottom maze-border-x-axis">
             @if (column % 2 == 1) {
             <button 
@@ -18,7 +18,7 @@
         <div class="col-auto maze-border maze-border-top-and-bottom maze-border-side"></div>
     </div>
     <!-- Fill Rows -->
-    @for (row of this.rows; track row) {
+    @for (row of this.rows; track row; let index = $index) {
         <div class="row m-0 p-0 g-0">
           <div class="col-auto maze-border maze-border-side maze-border-y-axis m-0 p-0">
             @if (row % 2 == 1) {
@@ -32,7 +32,7 @@
             }
           </div>
         <!-- Fill columns -->
-        @for (column of this.columns; track column) {
+        @for (column of this.columns; track column; let index = $index) {
             <app-enchanted-maze-piece style="width: auto; height: auto;" [mazePiece]="this.getPiece(row, column)" (movePlayer)="this.movePlayer($event)"></app-enchanted-maze-piece>
         }
         <div class="col-auto maze-border maze-border-side maze-border-y-axis m-0 p-0">
@@ -51,7 +51,7 @@
     <!-- Border bottom here -->
     <div class="row m-0 p-0">
         <div class="col-auto maze-border maze-border-top-and-bottom maze-border-side"></div>
-        @for (column of this.columns; track column) {
+        @for (column of this.columns; track column; let index = $index) {
           <div class="col-auto m-0 p-0 maze-border maze-border-top-and-bottom maze-border-x-axis">
             <div class="col-auto maze-border maze-border-x-axis">
               @if (column % 2 == 1) {
