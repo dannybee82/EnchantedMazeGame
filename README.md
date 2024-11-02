@@ -1,27 +1,27 @@
 # EnchantedMazeGame
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.2.
+Angular 18 and Bootstrap 5 - HTML game.
 
-## Development server
+Enchanted Maze Game. Based on a board game with the same name. 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Find treasures in a maze. Play against computers.
 
-## Code scaffolding
+See example images in root directory.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation + run app
 
-## Build
+**Command to install**
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+_npm install_
 
-## Running unit tests
+or shorter:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+_npm i_
 
-## Running end-to-end tests
+**Command to run the application:**
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+_ng serve --open_
 
-## Further help
+or shorter:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+_ng s --o_
