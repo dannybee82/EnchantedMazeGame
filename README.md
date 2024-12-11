@@ -1,6 +1,6 @@
 # EnchantedMazeGame
 
-Angular 18 and Bootstrap 5 - HTML game.
+Angular 19 and Bootstrap 5 - HTML game.
 
 Enchanted Maze Game. Based on a board game with the same name. 
 
