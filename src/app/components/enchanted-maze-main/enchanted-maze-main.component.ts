@@ -20,7 +20,6 @@ import { TreasureData } from '../../models/treasure-data.interface';
 
 @Component({
   selector: 'app-enchanted-maze-main',
-  standalone: true,
   imports: [
     EnchantedMazeInsertPieceComponent,
     EnchantedMazeTurnComponent,

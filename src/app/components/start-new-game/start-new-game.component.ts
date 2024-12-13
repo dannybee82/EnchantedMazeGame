@@ -4,7 +4,6 @@ import { GameSettings } from '../../models/game-settings.interface';
 
 @Component({
   selector: 'app-start-new-game',
-  standalone: true,
   imports: [],
   templateUrl: './start-new-game.component.html',
   styleUrl: './start-new-game.component.scss'

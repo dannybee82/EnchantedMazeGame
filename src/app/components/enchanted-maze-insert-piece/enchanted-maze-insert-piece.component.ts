@@ -5,7 +5,6 @@ import { EnchantedMazePieceComponent } from '../enchanted-maze-piece/enchanted-m
 
 @Component({
   selector: 'app-enchanted-maze-insert-piece',
-  standalone: true,
   imports: [
     EnchantedMazePieceComponent
   ],

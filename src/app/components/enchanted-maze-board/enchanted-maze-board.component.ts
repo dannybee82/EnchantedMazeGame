@@ -24,7 +24,6 @@ import { TreasureData } from '../../models/treasure-data.interface';
 
 @Component({
   selector: 'app-enchanted-maze-board',
-  standalone: true,
   imports: [
     EnchantedMazePieceComponent
   ],

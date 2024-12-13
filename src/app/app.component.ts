@@ -6,7 +6,6 @@ import { EnchantedMazeMainComponent } from './components/enchanted-maze-main/enc
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     StartNewGameComponent,
     EnchantedMazeMainComponent

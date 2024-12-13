@@ -6,7 +6,6 @@ import { MazePiece } from '../../models/maze-piece.interface';
 
 @Component({
   selector: 'app-enchanted-maze-turn',
-  standalone: true,
   imports: [],
   templateUrl: './enchanted-maze-turn.component.html',
   styleUrl: './enchanted-maze-turn.component.scss'

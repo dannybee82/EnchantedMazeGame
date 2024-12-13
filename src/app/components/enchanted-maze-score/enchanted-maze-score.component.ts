@@ -7,7 +7,6 @@ import { MazePiece } from '../../models/maze-piece.interface';
 
 @Component({
   selector: 'app-enchanted-maze-score',
-  standalone: true,
   imports: [],
   templateUrl: './enchanted-maze-score.component.html',
   styleUrl: './enchanted-maze-score.component.scss'

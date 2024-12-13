@@ -11,7 +11,6 @@ import { ShowHint } from '../../models/show-hint.interface';
 
 @Component({
   selector: 'app-enchanted-maze-hint',
-  standalone: true,
   imports: [],
   templateUrl: './enchanted-maze-hint.component.html',
   styleUrl: './enchanted-maze-hint.component.scss'
