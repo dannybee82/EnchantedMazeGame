@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, signal, inject } from '@angular/core';
 import { MazeService } from '../../services/maze.service';
 import { MazePiece } from '../../models/maze-piece.interface';
 import { EnchantedMazePieceComponent } from '../enchanted-maze-piece/enchanted-maze-piece.component';
@@ -32,14 +32,14 @@ import { TreasureData } from '../../models/treasure-data.interface';
 })
 export class EnchantedMazeBoardComponent extends ComputerPlayer implements OnInit {
 
-  showBoard: WritableSignal<boolean> = signal(false);
-  isInsertDisabled: WritableSignal<boolean> = signal(false);
+  protected showBoard: WritableSignal<boolean> = signal(false);
+  protected isInsertDisabled: WritableSignal<boolean> = signal(false);
 
-  pieces: MazePiece[] = [];
+  protected pieces: MazePiece[] = [];
 
   showHint: ShowHint = { side: -1, index: -1 };
 
-  constructor(
+	constructor(
     private mazeService: MazeService,
     private insertPieceService: InsertPieceService,
     private turnService: TurnService,

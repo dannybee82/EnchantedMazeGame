@@ -32,8 +32,8 @@ import { TreasureData } from '../../models/treasure-data.interface';
 })
 export class EnchantedMazeMainComponent implements OnInit, OnDestroy {
 
-  isAllSet: WritableSignal<boolean> = signal(false);
-  isGameEnded: WritableSignal<boolean> = signal(false);
+  protected isAllSet: WritableSignal<boolean> = signal(false);
+  protected isGameEnded: WritableSignal<boolean> = signal(false);
 
   private gameSettingsService = inject(GameSettingsService);
   private treasureService = inject(TreasureService);

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, WritableSignal, signal } from '@angular/core';
 import { InsertPieceService } from '../../services/insert-piece.service';
 import { MazePiece } from '../../models/maze-piece.interface';
 import { EnchantedMazePieceComponent } from '../enchanted-maze-piece/enchanted-maze-piece.component';
@@ -15,7 +15,7 @@ export class EnchantedMazeInsertPieceComponent implements OnInit {
 
   private insertPieceService = inject(InsertPieceService);
 
-  insertPiece: boolean = false;
+  protected insertPiece: WritableSignal<boolean> = signal(false);
   currentPiece?: MazePiece;
 
   ngOnInit(): void {
@@ -26,7 +26,7 @@ export class EnchantedMazeInsertPieceComponent implements OnInit {
     });
 
     this.insertPieceService.isPieceInserted$.subscribe((data: boolean) => {
-      this.insertPiece = data;
+      this.insertPiece.set(data);
     });
   }
 

@@ -15,8 +15,8 @@
         </div>
         <div class="col-2"><strong>Treasure:</strong></div>
         <div class="col-2 p-2">
-            @if(this.treasureImage !== '') {
-                <img [src]="this.treasureImage" />
+            @if(this.treasureImage() !== '') {
+                <img [src]="this.treasureImage()" />
             }
         </div>
     </div>

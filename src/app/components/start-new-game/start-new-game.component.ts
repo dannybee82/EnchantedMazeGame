@@ -10,7 +10,7 @@ import { GameSettings } from '../../models/game-settings.interface';
 })
 export class StartNewGameComponent implements OnInit {
 
-  showComponent: WritableSignal<boolean> = signal(false);
+  protected showComponent: WritableSignal<boolean> = signal(false);
 
   gameSettings: GameSettings = {
     gameStarted: false,

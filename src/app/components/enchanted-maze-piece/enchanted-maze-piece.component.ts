@@ -14,8 +14,8 @@ import { Position } from '../../models/position.interface';
 })
 export class EnchantedMazePieceComponent {
 
-  mazePiece: InputSignal<MazePiece> = input.required<MazePiece>({});
-  movePlayer: OutputEmitterRef<Position> = output<Position>();
+  readonly mazePiece: InputSignal<MazePiece> = input.required<MazePiece>({});
+  readonly movePlayer: OutputEmitterRef<Position> = output<Position>();
 
   private lastInsertedPosition = inject(LastInsertedPositionService);
 

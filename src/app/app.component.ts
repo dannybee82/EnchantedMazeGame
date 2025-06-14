@@ -14,9 +14,9 @@ import { EnchantedMazeMainComponent } from './components/enchanted-maze-main/enc
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  title = 'Enchanted Maze Game';
+  public title = 'Enchanted Maze Game';
 
-  isGameStarted: WritableSignal<boolean> = signal(false);
+  protected isGameStarted: WritableSignal<boolean> = signal(false);
 
   private gameSettingsService = inject(GameSettingsService);
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, WritableSignal, signal } from '@angular/core';
 import { TurnService } from '../../services/turn.service';
 import { Turn } from '../../models/turn.interface';
 import { MazeService } from '../../services/maze.service';
@@ -16,18 +16,18 @@ export class EnchantedMazeTurnComponent implements OnInit {
   private mazeService = inject(MazeService);
 
   currentTurn?: Turn;
-  treasureImage: string = '';
+  protected treasureImage: WritableSignal<string> = signal('');
 
   ngOnInit(): void {
     this.turnService.turns$.subscribe((data: Turn) => {
       if(data.totalTurns > 0) {
         this.currentTurn = {...data};
-        this.treasureImage = this.getPlayerTargetTreasure(data.currentPlayerTurn);
+        this.treasureImage.set(this.getPlayerTargetTreasure(data.currentPlayerTurn));
       }
     });
   }
 
-  getPlayerTargetTreasure(player: number): string {
+  private getPlayerTargetTreasure(player: number): string {
     const pieces: MazePiece[] = this.mazeService.maze$.getValue();
     const found: MazePiece | undefined = pieces.find(item => item.treasureForPlayer === player);
 

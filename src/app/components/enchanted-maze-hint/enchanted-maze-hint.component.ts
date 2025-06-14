@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ComputerPlayer } from '../../methods/ComputerPlayer';
 import { ComputerInsert } from '../../models/computer-insert.interface';
 import { MazeService } from '../../services/maze.service';
@@ -17,7 +17,7 @@ import { ShowHint } from '../../models/show-hint.interface';
 })
 export class EnchantedMazeHintComponent extends ComputerPlayer implements OnInit {
 
-  constructor(
+	constructor(
     private mazeService: MazeService,
     private insertPieceService: InsertPieceService,
     private turnService: TurnService,
@@ -26,9 +26,7 @@ export class EnchantedMazeHintComponent extends ComputerPlayer implements OnInit
     super();
   }
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   showHint(): void {
     const pieces: MazePiece[] = this.mazeService.maze$.getValue();
