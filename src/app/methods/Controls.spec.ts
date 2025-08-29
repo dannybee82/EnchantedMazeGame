@@ -97,7 +97,7 @@ describe('Class Controls', () => {
         testMaze001 = testClass.insert(testMaze001, testInsertPiece, false, true, 2, false);
         testInsertPiece = testClass.getChangedCurrentPiece();
 
-        expect(testInsertPiece.hasTreasure).toBeTrue();
+        expect(testInsertPiece.hasTreasure).toBeTruthy();
         expect(testInsertPiece.treasureForPlayer).toBe(playerNumber);
         //expect(testInsertPiece.treasureIndex).toBe(treasureIndex);
         expect(testInsertPiece.treasureImage).toContain('Treasure Here');
@@ -113,22 +113,22 @@ describe('Class Controls', () => {
             { row: 2, column: 2 } //position of treasure.
         ];
 
-        expect(testClass.canMove(testMaze001, paths, 0, playerNumber)).toBeFalse();
-        expect(testClass.canMove(testMaze001, paths, 1, playerNumber)).toBeTrue();
+        expect(testClass.canMove(testMaze001, paths, 0, playerNumber)).toBeFalsy();
+        expect(testClass.canMove(testMaze001, paths, 1, playerNumber)).toBeTruthy();
     });
 
     it('test method: isNotSamePiece()', () => {
         //Location of player.
-        expect(testClass.isNotSamePiece(testMaze001, 0, 0)).toBeTrue();
+        expect(testClass.isNotSamePiece(testMaze001, 0, 0)).toBeTruthy();
         //Location of treasure.
-        expect(testClass.isNotSamePiece(testMaze001, 0, 8)).toBeFalse();
+        expect(testClass.isNotSamePiece(testMaze001, 0, 8)).toBeFalsy();
     });
 
     it('test method: hasTreasure()', () => {
         //Middle of maze.
-        expect(testClass.hasTreasure(testMaze001, 4, playerNumber)).toBeFalse();
+        expect(testClass.hasTreasure(testMaze001, 4, playerNumber)).toBeFalsy();
         //Location of treasure.
-        expect(testClass.hasTreasure(testMaze001, 8, playerNumber)).toBeTrue();
+        expect(testClass.hasTreasure(testMaze001, 8, playerNumber)).toBeTruthy();
     });
 
     it('test method: move()', () => {

@@ -8,6 +8,7 @@ import { Position } from '../../models/position.interface';
 @Component({
   selector: 'app-enchanted-maze-piece',
   imports: [],
+  standalone: true,
   templateUrl: './enchanted-maze-piece.component.html',
   styleUrl: './enchanted-maze-piece.component.scss',
   animations: [PieceInserted]

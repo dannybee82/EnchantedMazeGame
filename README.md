@@ -1,6 +1,6 @@
 # EnchantedMazeGame
 
-Angular 20 (with [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2)  and Bootstrap 5 - HTML game.
+Angular 20 (with [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2) and Bootstrap 5 - HTML game.
 
 Enchanted Maze Game. Based on a board game with the same name. 
 
@@ -26,8 +26,29 @@ or shorter:
 
 _ng s --o_
 
+**Command to run the tests with Vitest:**
+
+_npm run test_
+
+To see the _code coverage_ of the tests:
+
+_npm run coverage_
+
+When the command above is finished, the report is generated at: _/coverage/index.html_
+
 ### **Changelog:**
 
+_September 2025_
+
+\- Updated packages.
+
+\_ Installed **Vitest** for tests. (removed _Karma_ which is **deprecated**).
+
+\- Changes in speficication files (_toBeTrue_ to _toBeTruthy_, _toBeFalse_ to _toBeFalsy_, etc.).
+
+\- Using _fixture.componentRef.setInput()_ to test _InputSignals_.
+
+  
 _June 2025_
 
 \- Upgrade to Angular 20. 

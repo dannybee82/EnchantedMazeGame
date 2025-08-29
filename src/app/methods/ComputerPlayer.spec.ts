@@ -175,8 +175,8 @@ describe('Class ComputerPlayer', () => {
         for(let i = 0; i < 10; i++) {
             let insert: ComputerInsert = testClass.computerInsertCalculation(testMaze003, insertPieceStraight, targetPlayer, testFixedRowAndColumnIndexes);
 
-            expect(insert.insertAxisY).toBeTrue();
-            expect(insert.isTopOrLeft).toBeFalse();
+            expect(insert.insertAxisY).toBeTruthy();
+            expect(insert.isTopOrLeft).toBeFalsy();
             expect(insert.orientation).toBe(1);
             expect(insert.rowOrColumnIndex).toBe(1);
         }
@@ -188,8 +188,8 @@ describe('Class ComputerPlayer', () => {
         for(let i = 0; i < 10; i++) {
             let insert: ComputerInsert = testClass.computerInsertCalculation(testMaze004, insertPieceWithPlayer, targetPlayer, testFixedRowAndColumnIndexes);
 
-            expect(insert.insertAxisY).toBeTrue();
-            expect(insert.isTopOrLeft).toBeFalse();
+            expect(insert.insertAxisY).toBeTruthy();
+            expect(insert.isTopOrLeft).toBeFalsy();
             expect(insert.orientation).toBe(1);
             expect(insert.rowOrColumnIndex).toBe(1);
         }
@@ -198,7 +198,7 @@ describe('Class ComputerPlayer', () => {
     it('test method: computerMoveCalculation() - computer NOT at board (pushed itself from the board)', () => {
         let cpuMove: ComputerMove = testClass.computerMoveCalculation(testMaze004, insertPieceWithPlayer, targetPlayer);
 
-        expect(cpuMove.canMove).toBeFalse();
+        expect(cpuMove.canMove).toBeFalsy();
         expect(cpuMove.row).toBe(-1);
         expect(cpuMove.column).toBe(-1);
     });
@@ -206,7 +206,7 @@ describe('Class ComputerPlayer', () => {
     it('test method: computerMoveCalculation() - treasure NOT at board (pushed treasure from the board)', () => {
         let cpuMove: ComputerMove = testClass.computerMoveCalculation(testMaze001, insertPieceWithTreasure, targetPlayer);
 
-        expect(cpuMove.canMove).toBeFalse();
+        expect(cpuMove.canMove).toBeFalsy();
         expect(cpuMove.row).toBe(-1);
         expect(cpuMove.column).toBe(-1);
     });
@@ -214,7 +214,7 @@ describe('Class ComputerPlayer', () => {
     it('test method: computerMoveCalculation() - computer at board, direct path to treasure', () => {
         let cpuMove: ComputerMove = testClass.computerMoveCalculation(testMaze001, insertPiece, targetPlayer);
 
-        expect(cpuMove.canMove).toBeTrue();
+        expect(cpuMove.canMove).toBeTruthy();
         expect(cpuMove.row).toBe(1);
         expect(cpuMove.column).toBe(1);
     });
@@ -222,7 +222,7 @@ describe('Class ComputerPlayer', () => {
     it('test method: computerMoveCalculation() - test closest path', () => {
         let cpuMove: ComputerMove = testClass.computerMoveCalculation(testMaze005, insertPiece, targetPlayer);
 
-        expect(cpuMove.canMove).toBeTrue();
+        expect(cpuMove.canMove).toBeTruthy();
         expect(cpuMove.row).toBe(2);
         expect(cpuMove.column).toBe(2);
     });
