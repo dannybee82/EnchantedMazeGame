@@ -38,16 +38,15 @@ When the command above is finished, the report is generated at: _/coverage/index
 
 ### **Changelog:**
 
-_September 2025_
+_August 2025_
 
 \- Updated packages.
 
-\_ Installed **Vitest** for tests. (removed _Karma_ which is **deprecated**).
+\- Installed **Vitest** for tests. (removed _Karma_ which is **deprecated**).
 
 \- Changes in speficication files (_toBeTrue_ to _toBeTruthy_, _toBeFalse_ to _toBeFalsy_, etc.).
 
 \- Using _fixture.componentRef.setInput()_ to test _InputSignals_.
-
   
 _June 2025_
 
